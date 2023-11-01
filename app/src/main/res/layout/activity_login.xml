@@ -11,27 +11,137 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <EditText
-            android:id="@+id/usernameField"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        >
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="text" />
+            app:srcCompat="@drawable/group" />
 
-        <EditText
-            android:id="@+id/passwordField"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword" />
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:onClick="loginClick"
-            android:text="Login" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="21dp"
+                android:text="Sign In" />
+
+            <EditText
+                android:id="@+id/emailField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_shape"
+                android:drawableStart="@drawable/mail"
+                android:drawablePadding="15dp"
+                android:hint="abc@email.com"
+                android:inputType="text"
+                android:padding="10dip" />
+
+            <EditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/border_shape"
+                android:drawableStart="@drawable/password"
+                android:drawablePadding="15dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dip" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                >
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="191dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Remember Me" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Forgot Password?" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="271dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/rounded_button"
+                android:drawableEnd="@drawable/rightarrow"
+                android:onClick="loginClick"
+                android:text="SIGN IN" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            >
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="OR" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="271dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/social_button"
+                android:text="Login with Google"
+
+                />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="271dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/social_button"
+                android:text="Login with Facebook"
+                />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:text="Don’t have an account?  Sign up" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
