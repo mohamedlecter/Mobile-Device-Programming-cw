@@ -4,6 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Primary_Blue">#5669FF</color>
     <color name="Primary_Gray">#747688</color>
-    <color name="Primary_Black">#807A7A</color>
+    <color name="Primary_Black">#120D26</color>
+    <color name="Off_white">#EDE5E5</color>
+
+
 
 </resources>

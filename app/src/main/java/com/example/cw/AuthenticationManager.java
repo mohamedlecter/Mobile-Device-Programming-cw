@@ -14,7 +14,7 @@ public class AuthenticationManager {
     }
 
     public static boolean isValidSignUp(String email, String username, String password) {
-        // Simulated logic: Check if the username is not already taken
+        // Simulated logic: Check if the email is not already taken
         if (userDatabase.containsKey(email)) {
             return false; // email is already in use
         }

@@ -31,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
 
         // Sign up the user
-        if (AuthenticationManager.isValidSignUp(username, email, password)) {
+        if (AuthenticationManager.isValidSignUp(email, username, password)) {
             // Successful sign-up
             Toast.makeText(this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
             // Proceed to the login screen or any other relevant action
