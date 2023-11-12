@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -31,6 +32,13 @@ public class SignUpActivity extends AppCompatActivity {
         usernameField = findViewById(R.id.usernameField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
+
+        // Navigate to loginActivity when "Already have an account? Sign in" is clicked
+        TextView alreadyHaveAcc = findViewById(R.id.alreadyHaveAcc);
+        alreadyHaveAcc.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void signUpClick(View view) {

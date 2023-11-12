@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,6 +29,13 @@ public class LoginActivity extends AppCompatActivity {
 
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
+
+        // Navigate to signupActivity when "Don’t have an account?  Sign up" is clicked
+        TextView dontHaveAcc = findViewById(R.id.dontHaveAcc);
+        dontHaveAcc.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void loginClick(View view) {

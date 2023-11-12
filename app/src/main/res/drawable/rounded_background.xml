@@ -1,0 +1,10 @@
+<!-- res/drawable/bottom_rounded_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item> <!-- Adjust the bottom value to control the radius -->
+        <shape android:shape="rectangle">
+            <corners android:topLeftRadius="0dp" android:topRightRadius="0dp" android:bottomLeftRadius="20dp" android:bottomRightRadius="20dp" />
+            <solid android:color="#4A43EC" /> <!-- Background color -->
+        </shape>
+    </item>
+</layer-list>
