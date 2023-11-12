@@ -10,6 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
@@ -26,18 +33,36 @@ public class LoginActivity extends AppCompatActivity {
     public void loginClick(View view) {
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-        Log.d("LoginActivity", "Email: " + email);
+
         // Authenticate the user
-        if (AuthenticationManager.isValidLogin(email, password)) {
-            // Successful login
-            Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-            // Proceed to the next screen or activity
-            // Create an Intent to launch the Home activity
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-        } else {
-            // Failed login
-            Log.d("LoginActivity", "Login failed for email: " + email);
-        }
+        new Thread(() -> {
+            Call<ResponseBody> call = RetrofitClient.getInstance().getApi().login(email, password);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful() && response.body() != null) { // if the sign up is success, sign up the user and navigate to login page
+                        try {
+                            String s = response.body().string();
+                            Toast.makeText(LoginActivity.this, s, Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class); // If login is successful, navigate to Home
+                            startActivity(intent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.e("SignUpActivity", "Error: " + response.code());
+                        // Handle unsuccessful response
+                        Toast.makeText(LoginActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    Log.e("SignUpActivity", "Error: " + t.getMessage());
+                }
+
+            });
+        }).start();
     }
 }
