@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        >
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/roundedView"
@@ -23,8 +22,7 @@
             android:outlineProvider="background"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/rounded_background"
-            android:padding="16dp"
-            >
+            android:padding="16dp">
 
             <!-- Navigation button -->
             <ImageButton
@@ -35,16 +33,15 @@
                 android:contentDescription="Navigation"
                 android:onClick="onNavigationButtonClick"
                 android:background="@null"
-                android:layout_marginVertical="16dp"
-                />
+                android:layout_marginVertical="16dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginBottom="16dp"
-                >
+                android:layout_marginBottom="16dp">
+
                 <!-- Search button -->
                 <ImageButton
                     android:id="@+id/searchButton"
@@ -53,7 +50,7 @@
                     android:contentDescription="search"
                     android:onClick="onSearchButtonClick"
                     android:src="@drawable/search"
-                    android:background="@null"/>
+                    android:background="@null" />
 
                 <!-- Search bar -->
                 <EditText
@@ -65,7 +62,7 @@
                     android:inputType="text"
                     android:textColor="@color/white"
                     android:padding="8dp"
-                    android:layout_marginHorizontal="5dp"/>
+                    android:layout_marginHorizontal="5dp" />
                 <!-- Filter button -->
 
                 <ImageButton
@@ -75,7 +72,7 @@
                     android:contentDescription="Filter"
                     android:onClick="onFilterButtonClick"
                     android:src="@drawable/filter"
-                    android:background="@null"/>
+                    android:background="@null" />
 
             </LinearLayout>
         </LinearLayout>
@@ -83,8 +80,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            >
+            android:padding="16dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,65 +99,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Upcoming Events"
-                        />
+                        android:text="Upcoming Events" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="See All"
-                        />
+                        android:text="See All" />
                 </LinearLayout>
 
-                <!-- Events container-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
+                <!-- Events RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/eventsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <!-- Your card content goes here -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/google"
-                             />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="event name"
-                            android:id="@+id/eventName"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="event location"
-                            android:id="@+id/evntLocation"
-                            android:textAlignment="center"
-                            android:drawableStart="@drawable/location"/>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
-
-
-            </LinearLayout>
-
         </ScrollView>
 
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
