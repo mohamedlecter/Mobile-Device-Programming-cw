@@ -3,6 +3,8 @@ package com.example.cw;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,23 +20,39 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity implements EventAdapter.OnItemClickListener {
     private Api api;
     private List<Event> events;
+    private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        api = RetrofitClient.getInstance().getApi();
+        api = RetrofitClient.getInstance().getApi(); // gets the api from the retrofi client
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout); // gets the swipeRefreshLayout
+        recyclerView = findViewById(R.id.eventsRecyclerView);
+
+        // Set up the RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Set up the SwipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Call the method to get events
+                getEvents();
+            }
+        });
 
         // Call the method to get events
         getEvents();
     }
-
     private void getEvents() {
         Call<List<Event>> call = api.getEvents();
         call.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
                 if (response.isSuccessful()) {
                     events = response.body();
 
