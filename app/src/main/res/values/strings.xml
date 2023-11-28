@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">cw</string>
     <string name="title_activity_event_details">EventDetailsActivity</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <string name="navigation">Navigation</string>
+    <string name="filter">Filter</string>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_event"
+            android:icon="@drawable/nav_events"
+            android:title="event" />
+        <item
+            android:id="@+id/nav_job"
+            android:icon="@drawable/nav_job"
+            android:title="Job Connect" />
+        <item
+            android:id="@+id/nav_links"
+            android:icon="@drawable/nav_link"
+            android:title="Campus Links" />
+
+    </group>
+
+
+    <item android:title="profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/nav_profile"
+                    android:title="My Profile" />
+                <item
+                    android:id="@+id/nav_signout"
+                    android:icon="@drawable/nav_signout"
+                    android:title="Sign Out" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

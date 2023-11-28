@@ -24,12 +24,14 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
     private SessionManager sessionManager;
     private Button signInButton;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize SessionManager
         sessionManager = new SessionManager(this);
-
+        // Initialize BottomNavigationView
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         signInButton = findViewById(R.id.signInButton);
