@@ -96,6 +96,7 @@
                 android:drawableEnd="@drawable/rightarrow"
                 android:backgroundTint="@color/Primary_Blue"
                 android:onClick="loginClick"
+                android:id="@+id/signInButton"
                 android:text="SIGN IN" />
 
         </LinearLayout>

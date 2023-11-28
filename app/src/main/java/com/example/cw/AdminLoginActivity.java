@@ -24,10 +24,15 @@ import retrofit2.Response;
 public class AdminLoginActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
+
+        // Initialize SessionManager
+        sessionManager = new SessionManager(this);
 
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
@@ -43,19 +48,17 @@ public class AdminLoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        // Parse the response to get user data, including isAdmin and userId
                         JSONObject jsonResponse = new JSONObject(response.body().string());
                         JSONObject userData = jsonResponse.getJSONObject("data").getJSONObject("user");
 
                         boolean isAdmin = userData.getBoolean("isAdmin");
                         String userId = userData.getString("_id");
 
-                        // Save isAdmin and userId to SharedPreferences
-                        saveUserDetailsToSharedPreferences(isAdmin, userId);
-
-                        // Log the saved values for verification
-                        Log.d("AdminActivity", "isAdmin retrieved: " + isAdmin);
-                        Log.d("AdminActivity", "userId retrieved: " + userId);
+                        Log.d("AdminActivity", "User ID: " + userId);
+                        Log.d("AdminActivity", "is admin: " + isAdmin);
+                        // Save isAdmin and userId to SessionManager
+                        sessionManager.saveIsAdmin(isAdmin);
+                        sessionManager.saveUserId(userId);
 
                         String s = response.body().string();
                         Toast.makeText(AdminLoginActivity.this, s, Toast.LENGTH_SHORT).show();
@@ -79,23 +82,5 @@ public class AdminLoginActivity extends AppCompatActivity {
                 // Handle failure (e.g., network issues)
             }
         });
-    }
-
-    private void saveUserDetailsToSharedPreferences(boolean isAdmin, String userId) {
-        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        // Save isAdmin
-        editor.putBoolean("isAdmin", isAdmin);
-
-        // Save userId
-        editor.putString("userId", userId);
-
-        // Apply the changes
-        editor.apply();
-
-        // Log the saved values for verification
-        Log.d("SharedPreferences", "isAdmin saved: " + isAdmin);
-        Log.d("SharedPreferences", "userId saved: " + userId);
     }
 }

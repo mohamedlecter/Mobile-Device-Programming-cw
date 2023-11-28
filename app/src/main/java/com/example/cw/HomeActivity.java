@@ -8,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.cw.model.Event;
 import java.util.List;
@@ -20,6 +21,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
     private List<Event> events;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
     private RecyclerView recyclerView;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
         // Set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Initialize SessionManager
+        sessionManager = new SessionManager(this);
 
         // Set up the SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -48,9 +53,10 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
     private void getEvents() {
         Call<List<Event>> call;
 
-        boolean isAdmin = getAdminStatusFromSharedPreferences();
+        boolean isAdmin = sessionManager.isAdmin();
         if (isAdmin) {
-            String userId = getUserIdFromSharedPreferences();
+            String userId = sessionManager.getUserId();
+            Log.d("HomeActivity", "User ID: " + userId);
             call = api.getAdminEvents(userId); // You need to provide the userId
         } else {
             call = api.getEvents();
@@ -90,16 +96,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class );
         intent.putExtra("event", clickedEvent);
         startActivity(intent);
-    }
-
-    private boolean getAdminStatusFromSharedPreferences() {
-        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
-        return preferences.getBoolean("isAdmin", false);
-    }
-
-    private String getUserIdFromSharedPreferences() {
-        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
-        return preferences.getString("userId", "");
     }
 
 }
