@@ -9,7 +9,9 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface Api {
     @FormUrlEncoded // because we are sending a from usl encoded
@@ -27,6 +29,16 @@ public interface Api {
             @Field("password") String password
     );
 
-    @GET("event/") // Use the correct endpoint for retrieving events
+    @FormUrlEncoded
+    @POST("user/admin/login")
+    Call<ResponseBody> adminLogin(
+            @Field("email") String email,
+            @Field("password") String password
+    );
+
+    @GET("event/")
     Call<List<Event>> getEvents();
-}
+
+    @GET("event/user/{userId}")
+    Call<List<Event>> getAdminEvents(@Path("userId") String userId);}
+

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".AdminLoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="21dp"
-                android:text="Sign In" />
+                android:text="Admin Sign In" />
 
             <EditText
                 android:id="@+id/emailField"
@@ -106,36 +106,6 @@
             android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="OR" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="271dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/Primary_Blue"
-                android:drawableLeft="@drawable/google"
-                android:text="Login with Google"
-
-
-                />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="271dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/Primary_Blue"
-                android:drawableLeft="@drawable/facebook"
-                android:text="Login with Facebook"
-
-                />
 
             <TextView
                 android:id="@+id/dontHaveAcc"
