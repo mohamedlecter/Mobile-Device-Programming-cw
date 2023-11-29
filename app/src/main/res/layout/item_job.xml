@@ -14,26 +14,33 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Event Name -->
+        <!-- job Title -->
         <TextView
-            android:id="@+id/eventName"
+            android:id="@+id/jobTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <!-- Event Date and Time -->
         <TextView
-            android:id="@+id/eventDateTime"
+            android:id="@+id/jobDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
-        <!-- Event Location -->
         <TextView
-            android:id="@+id/eventLocation"
+            android:id="@+id/company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/jobLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -41,16 +48,22 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
-        <!-- Event Description -->
         <TextView
-            android:id="@+id/eventDescription"
+            android:id="@+id/jobSalary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/jobOrganizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="14sp" />
 
         <ImageView
-            android:id="@+id/eventImage"
+            android:id="@+id/jobImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

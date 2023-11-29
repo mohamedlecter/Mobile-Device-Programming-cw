@@ -8,7 +8,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import com.example.cw.adapter.EventAdapter;
 import com.example.cw.model.Event;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements EventAdapter.OnItemClickListener {
+
     private Api api;
     private List<Event> events;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
@@ -27,7 +31,13 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initView();
+        BottomNavigation();
+        getEvents();
 
+    }
+
+    private void initView() {
         api = RetrofitClient.getInstance().getApi(); // gets the api from the retrofit client
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout); // gets the swipeRefreshLayout
         recyclerView = findViewById(R.id.eventsRecyclerView);
@@ -40,9 +50,28 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
         // Set up the SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(() -> getEvents());
-
-        getEvents();
     }
+
+    private void BottomNavigation() {
+        LinearLayout homeBtn = findViewById(R.id.home_Btn);
+        LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
+
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+            }
+        });
+
+        jobsBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, JobsActivity.class));
+            }
+        }));
+    }
+
 
     private void getEvents() {
         Call<List<Event>> call;
@@ -87,9 +116,8 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         Event clickedEvent = events.get(position);
 
         // Pass event details to the details activity
-        Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class );
+        Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class);
         intent.putExtra("event", clickedEvent);
         startActivity(intent);
     }
-
 }
