@@ -1,9 +1,6 @@
 package com.example.cw;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -11,26 +8,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-
 
 import com.example.cw.model.Event;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity implements EventAdapter.OnItemClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements EventAdapter.OnItemClickListener {
     private Api api;
     private List<Event> events;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
     private RecyclerView recyclerView;
     private SessionManager sessionManager;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +31,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         api = RetrofitClient.getInstance().getApi(); // gets the api from the retrofit client
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout); // gets the swipeRefreshLayout
         recyclerView = findViewById(R.id.eventsRecyclerView);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
 
         // Set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -52,16 +41,9 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         // Set up the SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(() -> getEvents());
 
-        navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Call the method to get events
         getEvents();
     }
 
-    public void onNavigationButtonClick(View view) {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
     private void getEvents() {
         Call<List<Event>> call;
 
@@ -110,33 +92,4 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         startActivity(intent);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.nav_event) {
-            // Handle "event" click, e.g., redirect to EventActivity
-            startActivity(new Intent(HomeActivity.this, EventActivity.class));
-        } else if (itemId == R.id.nav_job) {
-            // Handle "Job Connect" click, e.g., redirect to JobConnectActivity
-            startActivity(new Intent(HomeActivity.this, JobConnectActivity.class));
-        } else if (itemId == R.id.nav_links) {
-            // Handle "Campus Links" click, e.g., redirect to CampusLinksActivity
-            startActivity(new Intent(HomeActivity.this, CampusLinksActivity.class));
-        } else if (itemId == R.id.nav_profile) {
-            // Handle "My Profile" click, e.g., redirect to MyProfileActivity
-            startActivity(new Intent(HomeActivity.this, MyProfileActivity.class));
-        } else if (itemId == R.id.nav_signout) {
-            // Handle "Sign Out" click, e.g., perform sign-out logic
-            // For example, you can clear user session and go to LoginActivity
-            // sessionManager.logoutUser();
-            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-            finish(); // Close the current activity
-        }
-
-        // Close the drawer after handling the click
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
