@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cw.model.Event;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 public class EventDetailsActivity extends AppCompatActivity {
 
@@ -16,8 +20,6 @@ public class EventDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
-
-
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("event")) {
             Event event = (Event) intent.getSerializableExtra("event");
@@ -28,15 +30,47 @@ public class EventDetailsActivity extends AppCompatActivity {
             TextView eventLocationTextView = findViewById(R.id.eventLocationTextView);
             TextView eventOrganizerNameTextView = findViewById(R.id.eventOrganizerNameTextView);
             TextView eventDescTextView = findViewById(R.id.eventDescTextView);
+            ImageView eventImageView = findViewById(R.id.eventImage);
 
+            // Format and display date, day, month, and time
+            String formattedYear = String.valueOf(event.getYear());
+            String formattedDay = String.valueOf(event.getDay());
+            String formattedMonth = event.getMonth();
+
+            String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
 
             // Set event details in the TextViews
             eventNameTextView.setText(event.getTitle());
-            eventDateTextView.setText(event.getDate());
+            eventDateTextView.setText(displayDateTime);
             eventLocationTextView.setText(event.getLocation());
-//            eventOrganizerNameTextView.setText("Organizer: " + event.getOrganizer());
+            eventOrganizerNameTextView.setText(event.getEventOrganizer());
             eventDescTextView.setText(event.getDescription());
 
+            eventLocationTextView.setText(event.getLocation());
+
+            try {
+//                http://:4000/uploads/1700915869210ICN.jpg
+                String serverBaseUrl = "http://10.0.2.2:4000";
+//                    String serverBaseUrl = "http://localhost:4000";
+                String imagePath = serverBaseUrl + "/" + event.getImagePath().replace("\\", "/");
+                Log.d("ImagePath 2", imagePath);
+                Picasso.get()
+                        .load(imagePath)
+                        .into(eventImageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("Picasso", "Image loaded successfully");
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("Picasso", "Error loading image: " + e.getMessage());
+                            }
+                        });
+
+            } catch (IllegalArgumentException e) {
+                // Log an error or provide a placeholder image if needed
+                Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
+            }
 
             // Button for redirecting to the home page
             Button backButton = findViewById(R.id.button3);
@@ -49,6 +83,5 @@ public class EventDetailsActivity extends AppCompatActivity {
                 }
             });
         }
-
-        }
+    }
 }

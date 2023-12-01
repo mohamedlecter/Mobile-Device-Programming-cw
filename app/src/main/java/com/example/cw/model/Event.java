@@ -13,6 +13,8 @@ public class Event implements Serializable {
     private int year;
     private String eventImg;
 
+    private String eventOrganizer;
+
     public String getTitle() {
         return title;
     }
@@ -83,5 +85,13 @@ public class Event implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getEventOrganizer() {
+        return eventOrganizer;
+    }
+
+    public void setEventOrganizer(String eventOrganizer) {
+        this.eventOrganizer = eventOrganizer;
     }
 }

@@ -1,6 +1,6 @@
 <!-- activity_event_details.xml -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,18 +11,52 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_left"
+                app:tint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="Event Details"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/eventImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
         <!-- display the event name -->
         <TextView
             android:id="@+id/eventNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="40dp"
+            android:layout_marginVertical="20dp"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="115dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
             android:orientation="vertical">
             <!-- display the event date -->
@@ -33,7 +67,7 @@
                 android:layout_marginBottom="16dp"
                 android:drawableStart="@drawable/date"
                 android:drawablePadding="10sp"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
 
@@ -45,8 +79,9 @@
                 android:layout_marginBottom="16dp"
                 android:drawableStart="@drawable/location___copy"
                 android:drawablePadding="10sp"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
