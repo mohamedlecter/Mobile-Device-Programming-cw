@@ -18,7 +18,7 @@ public interface Api {
     @FormUrlEncoded // because we are sending a from usl encoded
     @POST("user/signup/") // this is what the endpoint in the api is
     Call<ResponseBody> signUp(
-            @Field("username") String username,
+            @Field("name") String username,
             @Field("email") String email,
             @Field("password") String password
     );

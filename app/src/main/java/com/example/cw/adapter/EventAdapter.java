@@ -1,4 +1,5 @@
 package com.example.cw.adapter;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cw.R;
 import com.example.cw.model.Event;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -51,7 +54,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView eventNameTextView;
-        private final TextView eventDescTextView;
         private final TextView eventDateTextView;
         private final TextView eventLocationTextView;
         private final ImageView eventImageView;
@@ -62,7 +64,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             itemView.setOnClickListener(this); // to get hold of the clicked event
             this.listener = listener;
             eventNameTextView = itemView.findViewById(R.id.eventName);
-            eventDescTextView = itemView.findViewById(R.id.eventDescription);
             eventDateTextView = itemView.findViewById(R.id.eventDateTime);
             eventLocationTextView = itemView.findViewById(R.id.eventLocation);
             eventImageView = itemView.findViewById(R.id.eventImage);
@@ -82,47 +83,41 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             if (event == null || event.getImagePath() == null || event.getImagePath().isEmpty()) {
                 Log.e("EventAdapter", "Invalid image path");
             } else {
+                // Format and display date, day, month, and time
+                String formattedYear = String.valueOf(event.getYear());
+                String formattedDay = String.valueOf(event.getDay());
+                String formattedMonth = event.getMonth();
+
+                String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
+
                 eventNameTextView.setText(event.getTitle());
-                eventDescTextView.setText(event.getDescription());
-                eventDateTextView.setText(event.getDate());
+                eventDateTextView.setText(displayDateTime);
                 eventLocationTextView.setText(event.getLocation());
 
-                // Log the image path to check if it's null
-//            Log.d("ImagePath", event.getImagePath());
-//
-//            try {
-////                http://:4000/uploads/1700915869210ICN.jpg
-//                // Replace backslashes with forward slashes and add the file URI scheme
-////                String serverBaseUrl = "http://10.0.2.2:4000";
-//                String serverBaseUrl = "http://localhost:4000";
-//                String imagePath = serverBaseUrl + "/" + event.getImagePath().replace("\\", "/");
-//                // Log the image path to check if it's null
-//                Log.d("ImagePath 2", imagePath);
-//                // Load the image using Picasso
-////                Picasso.get().load(imagePath).into(eventImageView);
-//                Picasso.get()
-//                        .load(imagePath)
-//                        .into(eventImageView, new Callback() {
-//                            @Override
-//                            public void onSuccess() {
-//                                Log.d("Picasso", "Image loaded successfully");
-//                            }
-//
-//                            @Override
-//                            public void onError(Exception e) {
-//                                Log.e("Picasso", "Error loading image: " + e.getMessage());
-//                            }
-//                        });
-//
-//
-//
-//            } catch (IllegalArgumentException e) {
-//                // Log an error or provide a placeholder image if needed
-//                Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
-//            }
-//        }
-            }
+                try {
+//                http://:4000/uploads/1700915869210ICN.jpg
+                String serverBaseUrl = "http://10.0.2.2:4000";
+//                    String serverBaseUrl = "http://localhost:4000";
+                    String imagePath = serverBaseUrl + "/" + event.getImagePath().replace("\\", "/");
+                    Log.d("ImagePath 2", imagePath);
+                    Picasso.get()
+                            .load(imagePath)
+                            .into(eventImageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d("Picasso", "Image loaded successfully");
+                                }
+                                @Override
+                                public void onError(Exception e) {
+                                    Log.e("Picasso", "Error loading image: " + e.getMessage());
+                                }
+                            });
 
+                } catch (IllegalArgumentException e) {
+                    // Log an error or provide a placeholder image if needed
+                    Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
+                }
+            }
         }
     }
 }

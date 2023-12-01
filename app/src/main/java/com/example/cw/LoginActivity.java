@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             sessionManager.saveUserId(userId);
 
                             // Log the saved values for verification
-                            Log.d("LoginActivity", "isAdmin saved: " + isAdmin);
+                            Log.d("LoginActivity", " saved: " + isAdmin);
                             Log.d("LoginActivity", "userId saved: " + userId);
 
                             String s = response.body().string();
@@ -170,8 +170,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
-                    Log.e("SignUpActivity", "Error: " + t.getMessage());
+                    Toast.makeText(LoginActivity.this, "Log in failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    Log.e("LoginActivity", "Error: " + t.getMessage());
                 }
 
             });

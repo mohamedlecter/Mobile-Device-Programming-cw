@@ -1,4 +1,5 @@
 package com.example.cw.model;
+
 import java.io.Serializable;
 
 public class Event implements Serializable {
@@ -6,6 +7,10 @@ public class Event implements Serializable {
     private String location;
     private String description;
     private String date;
+    private int day;
+    private String month;
+    private int time;
+    private int year;
     private String eventImg;
 
     public String getTitle() {
@@ -20,21 +25,48 @@ public class Event implements Serializable {
         return location;
     }
 
-    public void setLocation(String location)
-    {
+    public void setLocation(String location) {
         this.location = location;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getDate() {
         return date;
     }
+
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public String getImagePath() {
@@ -45,4 +77,11 @@ public class Event implements Serializable {
         this.eventImg = imagePath;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 }

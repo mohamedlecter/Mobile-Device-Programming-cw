@@ -55,6 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) { // if the sign up is success, sign up the user and navigate to login page
                         try {
                             String s = response.body().string();
+                            Log.d("SignUpActivity", "Response Body: " + s);
                             Toast.makeText(SignUpActivity.this, s, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class); // If signup is successful, navigate to LoginActivity
                             startActivity(intent);
@@ -62,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                     } else {
+
                         Log.e("SignUpActivity", "Error: " + response.code());
                         // Handle unsuccessful response
                         Toast.makeText(SignUpActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
@@ -71,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Toast.makeText(SignUpActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
-                        Log.e("SignUpActivity", "Error: " + t.getMessage());
+                        Log.e("SignUpActivity", "Error: " + t.getMessage(), t);
                     }
 
                 });
