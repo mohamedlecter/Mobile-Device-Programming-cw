@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.cw.SessionManager;
 import com.example.cw.api.Api;
+import com.example.cw.events.EventDetailsActivity;
 import com.example.cw.events.HomeActivity;
 import com.example.cw.R;
 import com.example.cw.api.RetrofitClient;
@@ -119,10 +120,12 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
-        // Handle click event, e.g., redirect to details page
         Job clickedJob = jobs.get(position);
 
-        // Implement your action here
+        // Pass job details to the details activity
+        Intent intent = new Intent(JobsActivity.this, JobDetailsActivity.class);
+        intent.putExtra("job", clickedJob);
+        startActivity(intent);
     }
 
     private void onSeeAllClick() {
@@ -130,7 +133,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         seeAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle click event, e.g., redirect to the Events page
                 Intent intent = new Intent(JobsActivity.this, SeeAllJobs.class);
                 startActivity(intent);
             }

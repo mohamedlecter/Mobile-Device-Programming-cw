@@ -3,7 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="Primary_Blue">#5669FF</color>
+    <color name="Secondary_Blue">#e6e8ff</color>
     <color name="Primary_Gray">#747688</color>
+    <color name="Secondary_Gray">#706E8F</color>
     <color name="Primary_Black">#120D26</color>
     <color name="Off_white">#EDE5E5</color>
     <color name="purple_200">#FFBB86FC</color>
@@ -12,6 +14,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="lavender">#8692f7</color>
+
+
 
 
 </resources>
