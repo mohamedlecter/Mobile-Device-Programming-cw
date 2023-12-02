@@ -50,9 +50,10 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
     public static class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView jobTitleTextView;
-        private final TextView jobDescTextView;
         private final TextView jobLocationTextView;
-
+        private final TextView jobDurationTextView;
+        //        private final TextView jobHoursTextView;
+        private final TextView jobSalaryTextView;
 
         private OnItemClickListener listener;
 
@@ -61,9 +62,11 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             itemView.setOnClickListener(this);
             this.listener = listener;
             jobTitleTextView = itemView.findViewById(R.id.jobTitle);
-            jobDescTextView = itemView.findViewById(R.id.jobDescription);
             jobLocationTextView = itemView.findViewById(R.id.jobLocation);
+            jobDurationTextView = itemView.findViewById(R.id.jobDuration);
+//            jobHoursTextView =  itemView.findViewById(R.id.jobHours);
 
+            jobSalaryTextView = itemView.findViewById(R.id.jobSalary);
         }
 
         @Override
@@ -77,10 +80,23 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         }
 
         public void bind(Job job) {
-            jobTitleTextView.setText(job.getTitle());
-            jobDescTextView.setText(job.getDescription());
-            jobLocationTextView.setText(job.getLocation());
+            String jobDurationStart = job.getJobDurationStart();
+            String jobDurationEnd = job.getJobDurationEnd();
 
+            String displayjobDuration = String.format("%s - %s", jobDurationStart, jobDurationEnd);
+
+            String jobHourStart = job.getJobHourStart();
+            String jobHourEnd = job.getJobHourEnd();
+
+            String displayjobHours = String.format("%s - %s", jobHourStart, jobHourEnd);
+
+            String jobSalary = String.valueOf(job.getSalary());
+            String displaySalary = String.format("%s$ per hour ", jobSalary);
+
+            jobTitleTextView.setText(job.getTitle());
+            jobLocationTextView.setText(job.getLocation());
+            jobDurationTextView.setText(displayjobDuration);
+            jobSalaryTextView.setText(displaySalary);
 
         }
     }

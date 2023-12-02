@@ -1,4 +1,4 @@
-package com.example.cw;
+package com.example.cw.events;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.cw.R;
 import com.example.cw.model.Event;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

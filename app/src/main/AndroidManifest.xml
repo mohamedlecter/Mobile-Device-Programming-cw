@@ -17,33 +17,27 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".JobsActivity"
+            android:name=".jobs.SeeAllJobs"
             android:exported="false" />
         <activity
-            android:name=".MyProfileActivity"
+            android:name=".events.Events"
             android:exported="false" />
         <activity
-            android:name=".CampusLinksActivity"
+            android:name=".jobs.JobsActivity"
             android:exported="false" />
         <activity
-            android:name=".JobConnectActivity"
+            android:name=".auth.AdminLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".EventActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AdminLoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EventDetailsActivity"
+            android:name=".events.EventDetailsActivity"
             android:exported="false"
             android:label="@string/title_activity_event_details"
             android:theme="@style/Theme.Cw" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".events.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".auth.SignUpActivity"
             android:exported="false" />
     </application>
 

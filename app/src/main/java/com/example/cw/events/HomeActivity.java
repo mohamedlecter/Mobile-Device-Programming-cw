@@ -1,4 +1,4 @@
-package com.example.cw;
+package com.example.cw.events;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,8 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.cw.api.Api;
+import com.example.cw.R;
+import com.example.cw.api.RetrofitClient;
+import com.example.cw.SessionManager;
 import com.example.cw.adapter.EventAdapter;
+import com.example.cw.jobs.JobsActivity;
 import com.example.cw.model.Event;
 
 import java.util.List;
@@ -34,7 +40,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         initView();
         BottomNavigation();
         getEvents();
-
+        onSeeAllClick();
     }
 
     private void initView() {
@@ -71,7 +77,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
             }
         }));
     }
-
 
     private void getEvents() {
         Call<List<Event>> call;
@@ -120,4 +125,17 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         intent.putExtra("event", clickedEvent);
         startActivity(intent);
     }
+
+    private void onSeeAllClick() {
+        TextView seeAllTextView = findViewById(R.id.seeALl);
+        seeAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle click event, e.g., redirect to the Events page
+                Intent intent = new Intent(HomeActivity.this, Events.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 }

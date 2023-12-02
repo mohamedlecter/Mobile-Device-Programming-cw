@@ -9,8 +9,11 @@ public class Job implements Serializable {
     private String location;
     private int salary;
     private String createdAt;
-    private String jobImg;
     private String jobOrganizer;
+    private String jobDurationStart;
+    private String jobDurationEnd;
+    private String jobHourStart;
+    private String jobHourEnd;
 
 
     public String getTitle() {
@@ -61,14 +64,6 @@ public class Job implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String getJobImg() {
-        return jobImg;
-    }
-
-    public void setJobImg(String jobImg) {
-        this.jobImg = jobImg;
-    }
-
     public String getJobOrganizer() {
         return jobOrganizer;
     }
@@ -77,5 +72,36 @@ public class Job implements Serializable {
         this.jobOrganizer = jobOrganizer;
     }
 
+    public String getJobDurationStart() {
+        return jobDurationStart;
+    }
+
+    public void setJobDurationStart(String jobDurationStart) {
+        this.jobDurationStart = jobDurationStart;
+    }
+
+    public String getJobDurationEnd() {
+        return jobDurationEnd;
+    }
+
+    public void setJobDurationEnd(String jobDurationEnd) {
+        this.jobDurationEnd = jobDurationEnd;
+    }
+
+    public String getJobHourStart() {
+        return jobHourStart;
+    }
+
+    public void setJobHourStart(String jobHourStart) {
+        this.jobHourStart = jobHourStart;
+    }
+
+    public String getJobHourEnd() {
+        return jobHourEnd;
+    }
+
+    public void setJobHourEnd(String jobHourEnd) {
+        this.jobHourEnd = jobHourEnd;
+    }
 
 }

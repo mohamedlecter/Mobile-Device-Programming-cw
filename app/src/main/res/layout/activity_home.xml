@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".HomeActivity">
+    tools:context=".events.HomeActivity">
 
     <LinearLayout
         android:id="@+id/container"
@@ -15,10 +15,36 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Upcoming Events"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/seeALl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:drawableEnd="@drawable/seeall"
+                android:text="See All"
+                android:textAlignment="center"
+                android:textColor="@color/Primary_Gray" />
+
+        </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
@@ -33,14 +59,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <!-- Events RecyclerView -->
+                    android:orientation="vertical">
+                    <!-- Jobs RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/eventsRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                       />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
             </ScrollView>

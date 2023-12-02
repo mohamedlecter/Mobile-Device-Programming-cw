@@ -1,4 +1,4 @@
-package com.example.cw;
+package com.example.cw.api;
 
 import com.example.cw.model.Event;
 import com.example.cw.model.Job;
@@ -45,6 +45,9 @@ public interface Api {
 
     @GET("job/")
     Call<List<Job>> getJobs();
+
+    @GET("job/user/{userId}")
+    Call<List<Job>> getAdminJobs(@Path("userId") String userId);
 }
 
 

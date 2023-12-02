@@ -1,15 +1,18 @@
-package com.example.cw;
+package com.example.cw.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.cw.R;
+import com.example.cw.api.RetrofitClient;
+import com.example.cw.SessionManager;
+import com.example.cw.events.HomeActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

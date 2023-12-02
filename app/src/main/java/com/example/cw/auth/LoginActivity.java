@@ -1,9 +1,8 @@
-package com.example.cw;
+package com.example.cw.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -24,6 +23,11 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.example.cw.R;
+import com.example.cw.api.RetrofitClient;
+import com.example.cw.SessionManager;
+import com.example.cw.events.HomeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LoginActivity extends AppCompatActivity {
