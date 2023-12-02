@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.cw.CampusLinks;
 import com.example.cw.SessionManager;
 import com.example.cw.api.Api;
 import com.example.cw.events.EventDetailsActivity;
@@ -23,6 +24,7 @@ import com.example.cw.model.Event;
 import com.example.cw.model.Job;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +65,7 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
     private void BottomNavigation() {
         LinearLayout homeBtn = findViewById(R.id.home_Btn);
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
+        LinearLayout linksBtn = findViewById(R.id.links_Btn);
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +79,13 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(JobsActivity.this, JobsActivity.class));
+            }
+        }));
+
+        linksBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(JobsActivity.this, CampusLinks.class));
             }
         }));
     }

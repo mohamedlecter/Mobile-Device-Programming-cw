@@ -2,6 +2,7 @@ package com.example.cw.api;
 
 import com.example.cw.model.Event;
 import com.example.cw.model.Job;
+import com.example.cw.model.Link;
 
 import java.util.List;
 
@@ -48,6 +49,9 @@ public interface Api {
 
     @GET("job/user/{userId}")
     Call<List<Job>> getAdminJobs(@Path("userId") String userId);
+
+    @GET("link/")
+    Call<List<Link>> getLinks();
 }
 
 

@@ -52,7 +52,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         private final TextView jobTitleTextView;
         private final TextView jobLocationTextView;
         private final TextView jobDurationTextView;
-        //        private final TextView jobHoursTextView;
         private final TextView jobSalaryTextView;
 
         private OnItemClickListener listener;
@@ -64,7 +63,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             jobTitleTextView = itemView.findViewById(R.id.jobTitle);
             jobLocationTextView = itemView.findViewById(R.id.jobLocation);
             jobDurationTextView = itemView.findViewById(R.id.jobDuration);
-//            jobHoursTextView =  itemView.findViewById(R.id.jobHours);
 
             jobSalaryTextView = itemView.findViewById(R.id.jobSalary);
         }
@@ -85,12 +83,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
             String displayjobDuration = String.format("%s - %s", jobDurationStart, jobDurationEnd);
 
-            String jobHourStart = job.getJobHourStart();
-            String jobHourEnd = job.getJobHourEnd();
-
-            String displayjobHours = String.format("%s - %s", jobHourStart, jobHourEnd);
-
             String jobSalary = String.valueOf(job.getSalary());
+
             String displaySalary = String.format("%s$ per hour ", jobSalary);
 
             jobTitleTextView.setText(job.getTitle());

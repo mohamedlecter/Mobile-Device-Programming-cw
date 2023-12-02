@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.cw.CampusLinks;
 import com.example.cw.api.Api;
 import com.example.cw.R;
 import com.example.cw.api.RetrofitClient;
@@ -21,6 +22,7 @@ import com.example.cw.jobs.JobsActivity;
 import com.example.cw.model.Event;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
     private void BottomNavigation() {
         LinearLayout homeBtn = findViewById(R.id.home_Btn);
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
+        LinearLayout linksBtn = findViewById(R.id.links_Btn);
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +79,13 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                 startActivity(new Intent(HomeActivity.this, JobsActivity.class));
             }
         }));
+        linksBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, CampusLinks.class));
+            }
+        }));
+
     }
 
     private void getEvents() {
