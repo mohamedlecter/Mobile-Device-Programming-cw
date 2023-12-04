@@ -20,6 +20,8 @@ import com.example.cw.SessionManager;
 import com.example.cw.adapter.EventAdapter;
 import com.example.cw.jobs.JobsActivity;
 import com.example.cw.model.Event;
+import com.example.cw.profile.profile;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         onSeeAllClick();
         getEvents();
         BottomNavigation();
+        setupAddButtonListener();
 
     }
 
@@ -62,9 +65,16 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
     }
 
     private void BottomNavigation() {
+        boolean isAdmin = sessionManager.isAdmin();
+
+        // Set the visibility of the add button based on the user's role
+        FloatingActionButton addButton = findViewById(R.id.buttonAdd);
+        addButton.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+
         LinearLayout homeBtn = findViewById(R.id.home_Btn);
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
         LinearLayout linksBtn = findViewById(R.id.links_Btn);
+        LinearLayout profileBtn = findViewById(R.id.Profile_Btn);
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,12 +97,20 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
             }
         }));
 
+        profileBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, profile.class));
+            }
+        }));
+
     }
 
     private void getEvents() {
         Call<List<Event>> call;
 
         boolean isAdmin = sessionManager.isAdmin();
+
         if (isAdmin) {
             String userId = sessionManager.getUserId();
             Log.d("HomeActivity", "User ID: " + userId);
@@ -145,6 +163,18 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                 // Handle click event, e.g., redirect to the Events page
                 Intent intent = new Intent(HomeActivity.this, Events.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setupAddButtonListener() {
+        FloatingActionButton addButtonLayout = findViewById(R.id.buttonAdd);
+
+        addButtonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirect to AddEvent activity
+                startActivity(new Intent(HomeActivity.this, AddEvent.class));
             }
         });
     }

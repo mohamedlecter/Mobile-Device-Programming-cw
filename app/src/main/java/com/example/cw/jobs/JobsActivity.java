@@ -22,6 +22,8 @@ import com.example.cw.api.RetrofitClient;
 import com.example.cw.adapter.JobAdapter;
 import com.example.cw.model.Event;
 import com.example.cw.model.Job;
+import com.example.cw.profile.profile;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -64,9 +66,17 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
     }
 
     private void BottomNavigation() {
+        boolean isAdmin = sessionManager.isAdmin();
+
+        // Set the visibility of the add button based on the user's role
+        FloatingActionButton addButton = findViewById(R.id.buttonAdd);
+        addButton.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+
         LinearLayout homeBtn = findViewById(R.id.home_Btn);
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
         LinearLayout linksBtn = findViewById(R.id.links_Btn);
+        LinearLayout profileBtn = findViewById(R.id.Profile_Btn);
+
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +97,13 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(JobsActivity.this, CampusLinks.class));
+            }
+        }));
+
+        profileBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(JobsActivity.this, profile.class));
             }
         }));
     }

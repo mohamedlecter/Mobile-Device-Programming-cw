@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cw.R;
+import com.example.cw.SessionManager;
 import com.example.cw.model.Event;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -79,7 +81,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         }
 
         public void bind(Event event) {
-
             if (event == null || event.getImagePath() == null || event.getImagePath().isEmpty()) {
                 Log.e("EventAdapter", "Invalid image path");
             } else {
@@ -117,6 +118,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                     // Log an error or provide a placeholder image if needed
                     Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
                 }
+
+                // Check if the user is an admin
+                SessionManager sessionManager = new SessionManager(itemView.getContext());
+                boolean isAdmin = sessionManager.isAdmin();
+
+                // Set the visibility of the eventActions LinearLayout based on admin status
+                LinearLayout eventActionsLayout = itemView.findViewById(R.id.eventActions);
+                if (isAdmin) {
+                    eventActionsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    eventActionsLayout.setVisibility(View.GONE);
+                }
+
             }
         }
     }
