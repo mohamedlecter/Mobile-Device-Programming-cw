@@ -8,6 +8,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -41,8 +42,18 @@ public interface Api {
     @GET("event/")
     Call<List<Event>> getEvents();
 
+    @DELETE("event/{eventId}")
+    Call<ResponseBody> deleteEvent(
+            @Path("eventId") String eventId,
+            @Header("Authorization") String authorizationHeader
+    );
+
     @GET("event/user/{userId}")
-    Call<List<Event>> getAdminEvents(@Path("userId") String userId);
+    Call<List<Event>> getAdminEvents(
+            @Path("userId") String userId,
+            @Header("Authorization") String authorizationHeader
+    );
+
 
     @GET("job/")
     Call<List<Job>> getJobs();
@@ -52,6 +63,8 @@ public interface Api {
 
     @GET("link/")
     Call<List<Link>> getLinks();
+
+
 }
 
 

@@ -15,6 +15,8 @@ public class Event implements Serializable {
 
     private String eventOrganizer;
 
+    private String _id;
+
     public String getTitle() {
         return title;
     }
@@ -93,5 +95,13 @@ public class Event implements Serializable {
 
     public void setEventOrganizer(String eventOrganizer) {
         this.eventOrganizer = eventOrganizer;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String _id) {
+        this._id = _id;
     }
 }

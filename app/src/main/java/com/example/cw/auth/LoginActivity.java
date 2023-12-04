@@ -135,12 +135,14 @@ public class LoginActivity extends AppCompatActivity {
 
                             boolean isAdmin = userData.getBoolean("isAdmin");
                             String userId = userData.getString("_id");
+                            String userToken = jsonResponse.getString("token");
 
                             Log.d("LoginActivity", "User ID: " + userId);
                             Log.d("LoginActivity", "is admin: " + isAdmin);
                             // Save isAdmin and userId to SessionManager
                             sessionManager.saveIsAdmin(isAdmin);
                             sessionManager.saveUserId(userId);
+                            sessionManager.saveUserToken(userToken);
 
                             // Log the saved values for verification
                             Log.d("LoginActivity", " saved: " + isAdmin);

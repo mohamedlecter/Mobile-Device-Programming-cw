@@ -1,16 +1,19 @@
 package com.example.cw.events;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cw.CampusLinks;
 import com.example.cw.api.Api;
@@ -23,8 +26,10 @@ import com.example.cw.model.Event;
 import com.example.cw.profile.profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
     private Api api;
     private List<Event> events;
+    private EventAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
     private RecyclerView recyclerView;
     private SessionManager sessionManager;
@@ -113,8 +119,13 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
         if (isAdmin) {
             String userId = sessionManager.getUserId();
+            String userToken = sessionManager.getUserToken();
+
+            // Include the user token in the Authorization header
+            String authorizationHeader = "Bearer " + userToken;
+
             Log.d("HomeActivity", "User ID: " + userId);
-            call = api.getAdminEvents(userId); // You need to provide the userId
+            call = api.getAdminEvents(userId, authorizationHeader);
         } else {
             call = api.getEvents();
         }
@@ -126,8 +137,41 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                     events = response.body();
 
                     if (events != null && !events.isEmpty()) {
-                        EventAdapter adapter = new EventAdapter(events);
-                        adapter.setOnItemClickListener(HomeActivity.this);
+                        adapter = new EventAdapter(events);
+
+                        // Set the click listener for regular item click
+                        adapter.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                // Handle regular item click, e.g., redirect to details page
+                                Event clickedEvent = events.get(position);
+                                Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class);
+                                intent.putExtra("event", clickedEvent);
+                                startActivity(intent);
+                            }
+                        });
+
+                        // Set the click listener for edit item click
+                        adapter.setOnEditClickListener(new EventAdapter.OnEditClickListener() {
+                            @Override
+                            public void onEditClick(int position) {
+                                // Handle edit event click, e.g., redirect to EditEvent activity
+                                Event selectedEvent = events.get(position);
+                                Intent intent = new Intent(HomeActivity.this, EditEvent.class);
+                                intent.putExtra("selectedEvent", selectedEvent);
+                                startActivity(intent);
+                            }
+                        });
+
+                        // Set the click listener for delete item click
+                        adapter.setOnDeleteClickListener(new EventAdapter.OnDeleteClickListener() {
+                            @Override
+                            public void onDeleteClick(int position) {
+                                // Handle delete event click
+                                showDeleteConfirmationDialog(position);
+                            }
+                        });
+
                         recyclerView.setAdapter(adapter);
                     } else {
                         // Handle case where no events are returned
@@ -146,10 +190,8 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
     @Override
     public void onItemClick(int position) {
-        // Handle click event, e.g., redirect to details page
+        // Handle regular item click, e.g., redirect to details page
         Event clickedEvent = events.get(position);
-
-        // Pass event details to the details activity
         Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class);
         intent.putExtra("event", clickedEvent);
         startActivity(intent);
@@ -167,6 +209,14 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         });
     }
 
+    public void onEditClick(int position) {
+        // Handle edit event click, e.g., redirect to EditEvent activity
+        Event selectedEvent = events.get(position);
+        Intent intent = new Intent(HomeActivity.this, EditEvent.class);
+        intent.putExtra("selectedEvent", selectedEvent);
+        startActivity(intent);
+    }
+
     private void setupAddButtonListener() {
         FloatingActionButton addButtonLayout = findViewById(R.id.buttonAdd);
 
@@ -178,5 +228,69 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
             }
         });
     }
+
+    private void showDeleteConfirmationDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Deletion");
+        builder.setMessage("Are you sure you want to delete this event?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Call the deleteEventApi method with the event ID
+                String eventId = events.get(position).getId(); // Replace with your actual event ID field
+                String userToken = sessionManager.getUserToken(); // Get the user token from SessionManager
+                deleteEventApi(eventId, userToken);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cancel the dialog
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+
+    private void deleteEventApi(String eventId, String userToken) {
+        Log.d("DeleteEvent", "Event id: " + eventId);
+
+        Call<ResponseBody> call = api.deleteEvent(eventId, "Bearer " + userToken);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String message = response.body().string();
+
+                        // Show a toast message for successful deletion
+                        Toast.makeText(HomeActivity.this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
+
+                        // Refresh the events (you may use any appropriate method)
+                        getEvents();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("DeleteEvent", "Unsuccessful response: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("DeleteEvent", "Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
 
 }

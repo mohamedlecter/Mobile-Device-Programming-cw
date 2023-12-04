@@ -109,6 +109,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/edit"
                     android:background="@null"
+                    android:id="@+id/editEvent"
 
                     />
 
@@ -117,6 +118,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/delete"
                     android:background="@null"
+                    android:id="@+id/deleteEvent"
 
                     />
             </LinearLayout>

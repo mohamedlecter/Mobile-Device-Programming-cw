@@ -7,6 +7,7 @@ public class SessionManager {
     private static final String PREF_NAME = "user_session";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_IS_ADMIN = "is_admin";
+    private static final String KEY_USER_TOKEN = "user_token";
 
     private final SharedPreferences sharedPreferences;
 
@@ -32,6 +33,16 @@ public class SessionManager {
 
     public boolean isAdmin() {
         return sharedPreferences.getBoolean(KEY_IS_ADMIN, false);
+    }
+
+    public void saveUserToken(String userToken) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USER_TOKEN, userToken);
+        editor.apply();
+    }
+
+    public String getUserToken() {
+        return sharedPreferences.getString(KEY_USER_TOKEN, null);
     }
 
     public void clearSession() {

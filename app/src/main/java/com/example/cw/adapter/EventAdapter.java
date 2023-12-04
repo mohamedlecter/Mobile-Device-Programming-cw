@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,14 +22,20 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<Event> events;
-    private OnItemClickListener mListener;
+    private OnItemClickListener itemClickListener;
+    private OnEditClickListener editClickListener;
+    private OnDeleteClickListener deleteClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
+    public interface OnEditClickListener {
+        void onEditClick(int position);
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int position);
     }
 
     public EventAdapter(List<Event> events) {
@@ -40,13 +47,46 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_event, parent, false);
-        return new EventViewHolder(view, mListener);
+        return new EventViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = events.get(position);
         holder.bind(event);
+
+        final int adapterPosition = holder.getAdapterPosition();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(adapterPosition);
+                }
+            }
+        });
+        holder.editEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editClickListener != null) {
+                    editClickListener.onEditClick(adapterPosition);
+                }
+            }
+        });
+
+        holder.deleteEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteClickListener != null) {
+                    deleteClickListener.onDeleteClick(adapterPosition);
+                }
+            }
+        });
+    }
+
+    public void updateEvents(List<Event> newEvents) {
+        events.clear();
+        events.addAll(newEvents);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -54,30 +94,35 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return events.size();
     }
 
-    public static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+
+    public void setOnEditClickListener(OnEditClickListener listener) {
+        this.editClickListener = listener;
+    }
+
+    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
+        this.deleteClickListener = listener;
+    }
+
+    public static class EventViewHolder extends RecyclerView.ViewHolder {
         private final TextView eventNameTextView;
         private final TextView eventDateTextView;
         private final TextView eventLocationTextView;
         private final ImageView eventImageView;
-        private OnItemClickListener listener;
+        private ImageButton editEventButton;
 
-        public EventViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+        private  ImageButton deleteEventButton;
+
+        public EventViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this); // to get hold of the clicked event
-            this.listener = listener;
             eventNameTextView = itemView.findViewById(R.id.eventName);
             eventDateTextView = itemView.findViewById(R.id.eventDateTime);
             eventLocationTextView = itemView.findViewById(R.id.eventLocation);
             eventImageView = itemView.findViewById(R.id.eventImage);
-        }
-
-        public void onClick(View view) {
-            if (listener != null) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(position);
-                }
-            }
+            editEventButton = itemView.findViewById(R.id.editEvent);
+            deleteEventButton = itemView.findViewById(R.id.deleteEvent);
         }
 
         public void bind(Event event) {
@@ -97,7 +142,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
                 try {
 //                http://:4000/uploads/1700915869210ICN.jpg
-                String serverBaseUrl = "http://10.0.2.2:4000";
+                    String serverBaseUrl = "http://10.0.2.2:4000";
 //                    String serverBaseUrl = "http://localhost:4000";
                     String imagePath = serverBaseUrl + "/" + event.getImagePath().replace("\\", "/");
                     Log.d("ImagePath 2", imagePath);
@@ -108,6 +153,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                                 public void onSuccess() {
                                     Log.d("Picasso", "Image loaded successfully");
                                 }
+
                                 @Override
                                 public void onError(Exception e) {
                                     Log.e("Picasso", "Error loading image: " + e.getMessage());
