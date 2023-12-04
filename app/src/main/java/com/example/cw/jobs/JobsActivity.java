@@ -42,9 +42,10 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
         initView();
-        BottomNavigation();
-        getJobs();
         onSeeAllClick();
+        getJobs();
+        BottomNavigation();
+
     }
 
     private void initView() {

@@ -38,8 +38,8 @@ public class CampusLinks extends AppCompatActivity implements LinksAdapter.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_links);
         initView();
-        BottomNavigation();
         getLinks();
+        BottomNavigation();
     }
 
     private void initView() {

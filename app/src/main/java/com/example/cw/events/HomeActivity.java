@@ -40,9 +40,10 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
-        BottomNavigation();
-        getEvents();
         onSeeAllClick();
+        getEvents();
+        BottomNavigation();
+
     }
 
     private void initView() {
