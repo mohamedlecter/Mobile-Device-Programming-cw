@@ -61,6 +61,12 @@ public interface Api {
     @GET("job/user/{userId}")
     Call<List<Job>> getAdminJobs(@Path("userId") String userId);
 
+
+    @DELETE("job/{jobId}")
+    Call<ResponseBody> deleteJob(
+            @Path("jobId") String jobId,
+            @Header("Authorization") String authorizationHeader
+    );
     @GET("link/")
     Call<List<Link>> getLinks();
 

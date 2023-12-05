@@ -20,61 +20,115 @@
             android:layout_height="wrap_content"
             android:textColor="@color/Primary_Blue"
             android:textSize="14sp"
-            android:textStyle="normal"
-            />
+            android:textStyle="normal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_marginVertical="5dp">
+            android:orientation="horizontal">
 
-            <!-- job Title -->
-            <TextView
-                android:id="@+id/jobTitle"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="title"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart"
-                android:layout_weight="@integer/material_motion_duration_long_1"/>
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start">
+                <!-- job Title -->
+                <TextView
+                    android:id="@+id/jobTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="@integer/material_motion_duration_long_1"
+                    android:text="title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <!-- job salary -->
 
-            <TextView
-                android:id="@+id/jobSalary"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="14sp"
-                android:textAlignment="viewEnd"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/jobSalary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="test"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <!-- job location -->
 
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/location"
-                android:layout_gravity="center_vertical"/>
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:textAlignment="center">
 
-            <TextView
-                android:id="@+id/jobLocation"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/location" />
+
+                <TextView
+                    android:id="@+id/jobLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/jobActions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="test"
-                android:textAlignment="center"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/editJob"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:src="@drawable/edit"
+
+                    />
+
+                <ImageButton
+                    android:id="@+id/deleteJob"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:src="@drawable/delete"
+
+                    />
+            </LinearLayout>
+
+
         </LinearLayout>
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -15,6 +15,7 @@ public class Job implements Serializable {
     private String jobHourStart;
     private String jobHourEnd;
 
+    private String _id;
 
     public String getTitle() {
         return title;
@@ -104,4 +105,11 @@ public class Job implements Serializable {
         this.jobHourEnd = jobHourEnd;
     }
 
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String _id) {
+        this._id = _id;
+    }
 }

@@ -1,12 +1,15 @@
 package com.example.cw.jobs;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,18 +18,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.cw.CampusLinks;
 import com.example.cw.SessionManager;
 import com.example.cw.api.Api;
-import com.example.cw.events.EventDetailsActivity;
 import com.example.cw.events.HomeActivity;
 import com.example.cw.R;
 import com.example.cw.api.RetrofitClient;
 import com.example.cw.adapter.JobAdapter;
-import com.example.cw.model.Event;
 import com.example.cw.model.Job;
 import com.example.cw.profile.profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         onSeeAllClick();
         getJobs();
         BottomNavigation();
+        setupAddButtonListener();
 
     }
 
@@ -76,7 +79,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
         LinearLayout linksBtn = findViewById(R.id.links_Btn);
         LinearLayout profileBtn = findViewById(R.id.Profile_Btn);
-
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +117,7 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         if (isAdmin) {
             String userId = sessionManager.getUserId();
             Log.d("JobActiviy", "User ID: " + userId);
-            call = api.getAdminJobs(userId); // You need to provide the userId
+            call = api.getAdminJobs(userId);
         } else {
             call = api.getJobs();
         }
@@ -129,8 +131,28 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
 
                     if (jobs != null && !jobs.isEmpty()) {
                         JobAdapter adapter = new JobAdapter(jobs);
-                        adapter.setOnItemClickListener(JobsActivity.this);
+                        // Set the click listener for edit item click
+                        adapter.setOnEditClickListener(new JobAdapter.OnEditClickListener() {
+                            @Override
+                            public void onEditClick(int position) {
+                                Job selectedJob = jobs.get(position);
+                                Intent intent = new Intent(JobsActivity.this, EditJob.class);
+                                intent.putExtra("selectedJob", selectedJob);
+                                startActivity(intent);
+                            }
+                        });
+                        // Set the click listener for delete item click
+                        adapter.setOnDeleteClickListener(new JobAdapter.OnDeleteClickListener() {
+                            @Override
+                            public void onDeleteClick(int position) {
+                                showDeleteConfirmationDialog(position);
+                            }
+                        });
+
+
                         recyclerView.setAdapter(adapter);
+
+
                     } else {
                         // Handle case where no jobs are returned
                     }
@@ -163,6 +185,69 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
             public void onClick(View v) {
                 Intent intent = new Intent(JobsActivity.this, SeeAllJobs.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void showDeleteConfirmationDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Deletion");
+        builder.setMessage("Are you sure you want to delete this job?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String jobId = jobs.get(position).getId();
+                String userToken = sessionManager.getUserToken();
+                deleteJobApi(jobId, userToken);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cancel the dialog
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void setupAddButtonListener() {
+        FloatingActionButton addButtonLayout = findViewById(R.id.buttonAdd);
+
+        addButtonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(JobsActivity.this, AddJob.class));
+            }
+        });
+    }
+
+    private void deleteJobApi(String jobId, String userToken) {
+        Log.d("DeleteJob", "Job id: " + jobId);
+
+        Call<ResponseBody> call = api.deleteJob(jobId, "Bearer " + userToken);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    // Show a toast message for successful deletion
+                    Toast.makeText(JobsActivity.this, "Job deleted successfully", Toast.LENGTH_SHORT).show();
+
+                    // Refresh the jobs
+                    getJobs();
+                } else {
+                    Log.e("DeleteJob", "Unsuccessful response: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("DeleteJob", "Error: " + t.getMessage());
             }
         });
     }

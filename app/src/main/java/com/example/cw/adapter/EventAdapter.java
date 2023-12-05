@@ -83,12 +83,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         });
     }
 
-    public void updateEvents(List<Event> newEvents) {
-        events.clear();
-        events.addAll(newEvents);
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
         return events.size();

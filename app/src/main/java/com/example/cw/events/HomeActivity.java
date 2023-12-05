@@ -180,7 +180,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                     // Handle unsuccessful response
                 }
             }
-
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 // Handle failure (e.g., network issues)
@@ -207,14 +206,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                 startActivity(intent);
             }
         });
-    }
-
-    public void onEditClick(int position) {
-        // Handle edit event click, e.g., redirect to EditEvent activity
-        Event selectedEvent = events.get(position);
-        Intent intent = new Intent(HomeActivity.this, EditEvent.class);
-        intent.putExtra("selectedEvent", selectedEvent);
-        startActivity(intent);
     }
 
     private void setupAddButtonListener() {
@@ -265,32 +256,19 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String message = response.body().string();
+                    // Show a toast message for successful deletion
+                    Toast.makeText(HomeActivity.this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
 
-                        // Show a toast message for successful deletion
-                        Toast.makeText(HomeActivity.this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
-
-                        // Refresh the events (you may use any appropriate method)
-                        getEvents();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    // Refresh the events
+                    getEvents();
                 } else {
                     Log.e("DeleteEvent", "Unsuccessful response: " + response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("DeleteEvent", "Error: " + t.getMessage());
             }
         });
     }
-
-    private void showToast(String message) {
-        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-
 }
