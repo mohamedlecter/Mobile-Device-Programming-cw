@@ -30,6 +30,10 @@
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,73 +47,134 @@
                 android:text="Create  Event"
                 android:textSize="20dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/eventLocation"
+                android:layout_marginTop="15dp"
+                android:text="Event Title"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/eventTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/no_rounded_corners"
                 android:hint="Event Title"
                 android:inputType="text"
-                android:padding="15dip"
+                android:padding="10dip"
                 tools:ignore="TextFields" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/eventLocation"
+                android:layout_marginTop="10dp"
+                android:text="Event Decription"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/eventDsc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/no_rounded_corners"
                 android:hint="Event Description"
                 android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields"
+                android:padding="10dip"
+                tools:ignore="TextFields" />
 
-                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/eventLocation"
+                android:layout_marginTop="10dp"
+                android:text="Event Location"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/eventLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/no_rounded_corners"
-                android:hint="Event Loaction"
+                android:hint="Event Location"
                 android:inputType="text"
-                android:padding="15dip"
+                android:padding="10dip"
                 tools:ignore="TextFields" />
 
-            <EditText
-                android:id="@+id/eventDate"
+
+            <TextView
+                android:id="@+id/startDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/eventTitle"
+                android:layout_marginTop="10dp"
+                android:text="Start Date and Time"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/startDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_below="@id/startDateLabel"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/no_rounded_corners"
-                android:hint="Event Date"
-                android:inputType="text"
-                android:padding="15dip"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="Select Start Date and Time"
+                android:onClick="showStartDatePicker"
+                android:padding="15dp"
                 tools:ignore="TextFields" />
 
-            <EditText
-                android:id="@+id/eventPrice"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startDate"
+                android:layout_marginTop="10dp"
+                android:text="End Date and Time"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/endDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/no_rounded_corners"
-                android:hint="Event Price"
-                android:inputType="text"
-                android:padding="15dip"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="Select End Date and Time"
+                android:onClick="showEndDatePicker"
+                android:padding="15dp"
                 tools:ignore="TextFields" />
 
-            <EditText
-                android:id="@+id/eventPoster"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startDate"
+                android:layout_marginTop="10dp"
+                android:text="Event Image"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageViewEventPoster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/no_rounded_corners"
-                android:hint="Event Poster"
-                android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields" />
+                android:layout_below="@id/eventPoster"
+                android:layout_marginTop="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_launcher_foreground" />
+
+            <Button
+                android:id="@+id/btnPickImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageViewEventPoster"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:text="Pick Image" />
 
 
             <Button
@@ -121,6 +186,8 @@
                 android:text="CREATE EVENT" />
 
         </LinearLayout>
+
+        </ScrollView>
 
 
     </LinearLayout>

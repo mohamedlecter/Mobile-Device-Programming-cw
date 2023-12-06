@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!--Permissions for the Android below 11 (R)-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--Permission for the Android 11 (R) and above-->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cw"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".jobs.EditJob"
             android:exported="false" />
@@ -27,7 +32,10 @@
             android:exported="false" />
         <activity
             android:name=".events.AddEvent"
-            android:exported="false" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:launchMode="standard"
+            />
         <activity
             android:name=".profile.profile"
             android:exported="false" />

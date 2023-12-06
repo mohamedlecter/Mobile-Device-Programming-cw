@@ -123,15 +123,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             if (event == null || event.getImagePath() == null || event.getImagePath().isEmpty()) {
                 Log.e("EventAdapter", "Invalid image path");
             } else {
-                // Format and display date, day, month, and time
-                String formattedYear = String.valueOf(event.getYear());
-                String formattedDay = String.valueOf(event.getDay());
-                String formattedMonth = event.getMonth();
 
-                String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
+//                String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
 
                 eventNameTextView.setText(event.getTitle());
-                eventDateTextView.setText(displayDateTime);
+                eventDateTextView.setText(event.getStartDate());
                 eventLocationTextView.setText(event.getLocation());
 
                 try {

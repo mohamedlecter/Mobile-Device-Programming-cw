@@ -33,16 +33,16 @@ public class EventDetailsActivity extends AppCompatActivity {
             TextView eventDescTextView = findViewById(R.id.eventDescTextView);
             ImageView eventImageView = findViewById(R.id.eventImage);
 
-            // Format and display date, day, month, and time
-            String formattedYear = String.valueOf(event.getYear());
-            String formattedDay = String.valueOf(event.getDay());
-            String formattedMonth = event.getMonth();
+//            // Format and display date, day, month, and time
+//            String formattedYear = String.valueOf(event.getYear());
+//            String formattedDay = String.valueOf(event.getDay());
+//            String formattedMonth = event.getMonth();
 
-            String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
+//            String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
 
             // Set event details in the TextViews
             eventNameTextView.setText(event.getTitle());
-            eventDateTextView.setText(displayDateTime);
+            eventDateTextView.setText(event.getStartDate());
             eventLocationTextView.setText(event.getLocation());
             eventOrganizerNameTextView.setText(event.getEventOrganizer());
             eventDescTextView.setText(event.getDescription());
