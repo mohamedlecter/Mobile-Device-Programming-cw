@@ -6,6 +6,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +27,11 @@ import com.example.cw.model.Event;
 import com.example.cw.model.Job;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -44,6 +49,7 @@ public class AddJob extends AppCompatActivity {
 
     private TextView startDateTextView;
     private TextView endDateTextView;
+    private Button saveButton;
 
     private Calendar calendarStart;
     private Calendar calendarEnd;
@@ -68,7 +74,7 @@ public class AddJob extends AppCompatActivity {
         endDateTextView = findViewById(R.id.endJobDate);
 
         ImageView backButton = findViewById(R.id.buttonBackToEvents);
-        Button saveButton = findViewById(R.id.buttonSave);
+        saveButton = findViewById(R.id.buttonSave);
 
 
         sessionManager = new SessionManager(this);
@@ -97,6 +103,115 @@ public class AddJob extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDateTimePicker(false); // Pass false to indicate the end date/time
+            }
+        });
+
+        // TextWatchers to perform real-time validation
+        jobTitleEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateJobTitle(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        jobDescEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateJobDescription(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        jobLocationEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateJobLocation(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        companyEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateCompany(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        jobSalaryEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateJobSalary(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        endDateTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEndDate(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
             }
         });
 
@@ -204,4 +319,123 @@ public class AddJob extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+
+    private void validateJobTitle(String jobTitle) {
+        if (jobTitle.isEmpty()) {
+            jobTitleEditText.setError("Job title cannot be empty");
+        } else {
+            jobTitleEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateJobDescription(String jobDescription) {
+        if (jobDescription.isEmpty()) {
+            jobDescEditText.setError("Job description cannot be empty");
+        } else {
+            jobDescEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateJobLocation(String jobLocation) {
+        if (jobLocation.isEmpty()) {
+            jobLocationEditText.setError("Job location cannot be empty");
+        } else {
+            jobLocationEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateEndDate(String endDate) {
+        // Validate that the end date is not before the start date
+
+        String startDate = startDateTextView.getText().toString().trim();
+        Log.d("Addjob", "is valid date: " + isValidDate(startDate, endDate));
+        if (isValidDate(startDate, endDate)) {
+            endDateTextView.setError(null);
+        } else {
+            endDateTextView.setError("End date cannot be before the start date");
+        }
+    }
+
+    private void validateCompany(String company) {
+        if (company.isEmpty()) {
+            companyEditText.setError("Company cannot be empty");
+        } else {
+            companyEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateJobSalary(String jobSalary) {
+        if (jobSalary.isEmpty()) {
+            jobSalaryEditText.setError("Job salary cannot be empty");
+        } else {
+            try {
+                int salary = Integer.parseInt(jobSalary);
+                if (salary <= 0) {
+                    jobSalaryEditText.setError("Job salary must be a positive number");
+                } else {
+                    jobSalaryEditText.setError(null);
+                }
+            } catch (NumberFormatException e) {
+                jobSalaryEditText.setError("Invalid job salary format");
+            }
+        }
+
+        updateSaveButtonState();
+    }
+
+    private boolean isValidDate(String startDate, String endDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd, MMM yyyy", Locale.getDefault());
+
+        try {
+            Date startDateObj = dateFormat.parse(startDate);
+            Date endDateObj = dateFormat.parse(endDate);
+
+            // Check if the end date is not before the start date
+            if (endDateObj.before(startDateObj)) {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false; // Handle parsing errors
+        }
+        return true;
+    }
+
+
+    private void updateSaveButtonState() {
+        String jobTitle = jobTitleEditText.getText().toString().trim();
+        String jobDes = jobDescEditText.getText().toString().trim();
+        String jobLocation = jobLocationEditText.getText().toString().trim();
+        String comapny = companyEditText.getText().toString().trim();
+        String jobSalary = jobSalaryEditText.getText().toString().trim();
+
+
+        boolean isJobTitleValid = !jobTitle.isEmpty();
+        boolean isJobDescValid = !jobDes.isEmpty();
+        boolean isJobLocationValid = !jobLocation.isEmpty();
+        boolean isCompanyValid = !comapny.isEmpty();
+        boolean isJobSalaryValid = !jobSalary.isEmpty() && isValidJobSalary(jobSalary);
+        boolean isEndDateValid = isValidDate(startDateTextView.getText().toString().trim(), endDateTextView.getText().toString().trim());
+
+        saveButton.setEnabled(isJobTitleValid && isJobDescValid &&
+                isJobLocationValid &&
+                isCompanyValid && isJobSalaryValid && isEndDateValid);
+    }
+
+    private boolean isValidJobSalary(String jobSalary) {
+        try {
+            int salary = Integer.parseInt(jobSalary);
+            return salary > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,8 +43,10 @@ import com.example.cw.model.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import okhttp3.MediaType;
@@ -71,6 +75,7 @@ public class AddEvent extends AppCompatActivity {
     private ImageView imageViewEventPoster;
     private ImageView backButton;
     private Button btnPickImage;
+    private Button saveButton;
 
     private SessionManager sessionManager;
 
@@ -93,6 +98,7 @@ public class AddEvent extends AppCompatActivity {
         imageViewEventPoster = findViewById(R.id.imageViewEventPoster);
         btnPickImage = findViewById(R.id.btnPickImage);
         backButton = findViewById(R.id.buttonBackToEvents);
+        saveButton = findViewById(R.id.buttonSave);
 
 
         sessionManager = new SessionManager(this);
@@ -131,7 +137,78 @@ public class AddEvent extends AppCompatActivity {
             }
         });
 
-        Button saveButton = findViewById(R.id.buttonSave);
+        // TextWatchers to perform real-time validation
+        eventTitleEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEventTitle(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        eventDescEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEventDescription(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        eventLocationEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEventLocation(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        endDateTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEndDate(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,7 +366,8 @@ public class AddEvent extends AppCompatActivity {
 
     /*Handle permission request results*/
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0) {
@@ -402,6 +480,82 @@ public class AddEvent extends AppCompatActivity {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.show();
+    }
+
+    private void validateEventTitle(String eventTitle) {
+        if (eventTitle.isEmpty()) {
+            eventTitleEditText.setError("Event title cannot be empty");
+        } else {
+            eventTitleEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateEventDescription(String eventDescription) {
+        if (eventDescription.isEmpty()) {
+            eventDescEditText.setError("Event description cannot be empty");
+        } else {
+            eventDescEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateEventLocation(String eventLocation) {
+        if (eventLocation.isEmpty()) {
+            eventLocationEditText.setError("Event location cannot be empty");
+        } else {
+            eventLocationEditText.setError(null);
+        }
+
+        updateSaveButtonState();
+    }
+
+    private void validateEndDate(String endDate) {
+        // Validate that the end date is not before the start date
+
+        String startDate = startDateTextView.getText().toString().trim();
+        Log.d("addevent", "is valid date: " + isValidDate(startDate, endDate));
+        if (isValidDate(startDate, endDate)) {
+            endDateTextView.setError(null);
+        } else {
+            endDateTextView.setError("End date cannot be before the start date");
+        }
+    }
+
+    private boolean isValidDate(String startDate, String endDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd, MMM yyyy", Locale.getDefault());
+
+        try {
+            Date startDateObj = dateFormat.parse(startDate);
+            Date endDateObj = dateFormat.parse(endDate);
+
+            // Check if the end date is not before the start date
+            if (endDateObj.before(startDateObj)) {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false; // Handle parsing errors
+        }
+        return true;
+    }
+
+
+    private void updateSaveButtonState() {
+        String eventTitle = eventTitleEditText.getText().toString().trim();
+        String eventDes = eventDescEditText.getText().toString().trim();
+        String eventLocation = eventLocationEditText.getText().toString().trim();
+        boolean isEndDateValid = isValidDate(startDateTextView.getText().toString().trim(), endDateTextView.getText().toString().trim());
+        boolean isImageSelected = event.getImagePath() != null;
+
+        boolean isTitleValid = !eventTitle.isEmpty();
+        boolean isDescValid = !eventDes.isEmpty();
+        boolean isLocationValid = !eventLocation.isEmpty();
+
+        saveButton.setEnabled(isTitleValid && isDescValid &&
+                isLocationValid && isEndDateValid && isImageSelected);
     }
 
 }
