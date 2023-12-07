@@ -37,7 +37,13 @@ public class EditEvent extends AppCompatActivity {
                 eventTitleEditText.setText(selectedEvent.getTitle());
                 eventDscEditText.setText(selectedEvent.getDescription());
                 eventLocationEditText.setText(selectedEvent.getLocation());
-                eventDateEditText.setText(selectedEvent.getStartDate());
+
+                String eventStartDate = selectedEvent.getStartDate();
+                String eventStartEnd = selectedEvent.getFinishDate();
+
+                String displayDateTime = String.format("%s - %s ", eventStartDate, eventStartEnd);
+
+                eventDateEditText.setText(displayDateTime);
             }
         }
 

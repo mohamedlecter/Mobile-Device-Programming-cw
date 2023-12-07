@@ -22,16 +22,16 @@ import retrofit2.http.Path;
 import retrofit2.http.Body;
 
 public interface Api {
-    @FormUrlEncoded // because we are sending a from usl encoded
-    @POST("user/signup/") // this is what the endpoint in the api is
+    @FormUrlEncoded
+    @POST("user/signup/")
     Call<ResponseBody> signUp(
             @Field("name") String username,
             @Field("email") String email,
             @Field("password") String password
     );
 
-    @FormUrlEncoded // because we are sending a from usl encoded
-    @POST("user/login/") // this is what the endpoint in the api is
+    @FormUrlEncoded
+    @POST("user/login/")
     Call<ResponseBody> login(
             @Field("email") String email,
             @Field("password") String password
@@ -86,6 +86,13 @@ public interface Api {
             @Path("jobId") String jobId,
             @Header("Authorization") String authorizationHeader
     );
+
+    @POST("job/")
+    Call<Job> postJob(
+            @Header("Authorization") String authorizationHeader,
+            @Body Job job
+    );
+
     @GET("link/")
     Call<List<Link>> getLinks();
 

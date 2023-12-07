@@ -30,74 +30,177 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ADD JOB"
-                android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/jobTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:background="@drawable/no_rounded_corners"
-                android:hint="Event Title"
-                android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/jobDsc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/no_rounded_corners"
-                android:hint="Event Description"
-                android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Job"
+                    android:textSize="20dp" />
 
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/jobTitle"
+                    android:layout_marginTop="15dp"
+                    android:text="Job Title"
+                    android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/jobLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/no_rounded_corners"
-                android:hint="Event Loaction"
-                android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields" />
+                <EditText
+                    android:id="@+id/jobTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:hint="Job Title"
+                    android:inputType="text"
+                    android:padding="10dip"
+                    tools:ignore="TextFields" />
 
-            <EditText
-                android:id="@+id/jobDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/no_rounded_corners"
-                android:hint="Event Date"
-                android:inputType="text"
-                android:padding="15dip"
-                tools:ignore="TextFields" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/jobDsc"
+                    android:layout_marginTop="10dp"
+                    android:text="Job Decription"
+                    android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/buttonSave"
-                android:layout_width="270dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:padding="16dp"
-                android:text="ADD JOB" />
+                <EditText
+                    android:id="@+id/jobDsc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:hint="Job Description"
+                    android:inputType="text"
+                    android:padding="10dip"
+                    tools:ignore="TextFields" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/jobLocation"
+                    android:layout_marginTop="10dp"
+                    android:text="Job Location"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/jobLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:hint="Job Location"
+                    android:inputType="text"
+                    android:padding="10dip"
+                    tools:ignore="TextFields" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company"
+                    android:layout_marginTop="10dp"
+                    android:text="Comapny"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:hint="Company"
+                    android:inputType="text"
+                    android:padding="10dip"
+                    tools:ignore="TextFields" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/salary"
+                    android:layout_marginTop="10dp"
+                    android:text="Job Salary"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/salary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:hint="Job Salary"
+                    android:inputType="text"
+                    android:padding="10dip"
+                    tools:ignore="TextFields" />
+
+
+
+
+                <TextView
+                    android:id="@+id/startDateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/eventTitle"
+                    android:layout_marginTop="10dp"
+                    android:text="Start Date and Time"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/startJobDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/startDateLabel"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Select Start Date and Time"
+                    android:onClick="showStartDatePicker"
+                    android:padding="15dp"
+                    tools:ignore="TextFields" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/startDate"
+                    android:layout_marginTop="10dp"
+                    android:text="End Date and Time"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/endJobDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/no_rounded_corners"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Select End Date and Time"
+                    android:onClick="showEndDatePicker"
+                    android:padding="15dp"
+                    tools:ignore="TextFields" />
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="270dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="CREATE JOB" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
 
     </LinearLayout>

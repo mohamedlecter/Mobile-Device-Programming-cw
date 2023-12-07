@@ -68,16 +68,16 @@ public class Event implements Serializable {
 
     public void setEventTimeStart(String eventTimeStart) {
         this.eventTimeStart = eventTimeStart;
-        setStartDateAndFinishDate(eventTimeStart, true);
     }
+
     public String getEventTimeStart() {
         return eventTimeStart;
     }
 
     public void setEventTimeEnd(String eventTimeEnd) {
         this.eventTimeEnd = eventTimeEnd;
-        setStartDateAndFinishDate(eventTimeEnd, false);
     }
+
     public String getEventTimeEnd() {
         return eventTimeEnd;
     }
@@ -98,25 +98,4 @@ public class Event implements Serializable {
         this.startDate = startDate;
     }
 
-    // Helper method to set start and finish dates based on the selected time
-    private void setStartDateAndFinishDate(String dateTime, boolean isStartTime) {
-        try {
-            SimpleDateFormat inputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
-            // Parse the input date format
-            Date date = inputDateFormat.parse(dateTime);
-
-            // Format the date in the desired output format
-            String formattedDate = outputDateFormat.format(date);
-
-            if (isStartTime) {
-                setStartDate(formattedDate);
-            } else {
-                setFinishDate(formattedDate);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 }

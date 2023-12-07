@@ -1,7 +1,6 @@
 package com.example.cw.events;
 
 
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -58,7 +57,6 @@ public class AddEvent extends AppCompatActivity {
     private EditText eventTitleEditText;
     private EditText eventDescEditText;
     private EditText eventLocationEditText;
-
     private TextView startDateTextView;
     private TextView endDateTextView;
     private Calendar calendarStart;
@@ -372,18 +370,25 @@ public class AddEvent extends AppCompatActivity {
                                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                                 calendar.set(Calendar.MINUTE, minute);
 
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                                String selectedDateTime = sdf.format(calendar.getTime());
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                                String selectedTime = sdf.format(calendar.getTime());
+
+                                SimpleDateFormat date = new SimpleDateFormat("dd, MMM yyyy", Locale.getDefault());
+                                String selectedDate = date.format(calendar.getTime());
+
 
                                 // Set the selected date and time to the appropriate TextView
                                 if (isStartDate) {
-                                    startDateTextView.setText(selectedDateTime);
+                                    startDateTextView.setText(selectedTime + " " + selectedDate);
                                     calendarStart = calendar;
-                                    event.setEventTimeStart(selectedDateTime);
+                                    event.setEventTimeStart(selectedTime);
+                                    event.setStartDate(selectedDate);
                                 } else {
-                                    endDateTextView.setText(selectedDateTime);
+                                    endDateTextView.setText(selectedTime + " " + selectedDate);
                                     calendarEnd = calendar;
-                                    event.setEventTimeEnd(selectedDateTime);
+                                    event.setEventTimeEnd(selectedTime);
+                                    event.setFinishDate(selectedDate);
+
                                 }
                             },
                             calendar.get(Calendar.HOUR_OF_DAY),

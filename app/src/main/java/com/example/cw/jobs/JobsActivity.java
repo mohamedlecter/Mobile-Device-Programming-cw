@@ -18,10 +18,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.cw.CampusLinks;
 import com.example.cw.SessionManager;
 import com.example.cw.api.Api;
+import com.example.cw.events.EventDetailsActivity;
 import com.example.cw.events.HomeActivity;
 import com.example.cw.R;
 import com.example.cw.api.RetrofitClient;
 import com.example.cw.adapter.JobAdapter;
+import com.example.cw.model.Event;
 import com.example.cw.model.Job;
 import com.example.cw.profile.profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -132,6 +134,18 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
                     if (jobs != null && !jobs.isEmpty()) {
                         JobAdapter adapter = new JobAdapter(jobs);
                         // Set the click listener for edit item click
+
+
+                        adapter.setOnItemClickListener(new JobAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                    // Handle regular item click, e.g., redirect to details page
+                                    Job selectedJob = jobs.get(position);
+                                    Intent intent = new Intent(JobsActivity.this, JobDetailsActivity.class);
+                                    intent.putExtra("job", selectedJob);
+                                    startActivity(intent);
+                            }
+                        });
                         adapter.setOnEditClickListener(new JobAdapter.OnEditClickListener() {
                             @Override
                             public void onEditClick(int position) {

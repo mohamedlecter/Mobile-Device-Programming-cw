@@ -123,11 +123,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             if (event == null || event.getImagePath() == null || event.getImagePath().isEmpty()) {
                 Log.e("EventAdapter", "Invalid image path");
             } else {
+                String eventStartDate = event.getStartDate();
+                String eventStartEnd = event.getFinishDate();
 
-//                String displayDateTime = String.format("%s, %s %s", formattedDay, formattedMonth, formattedYear);
+                String displayDateTime = String.format("%s - %s ", eventStartDate, eventStartEnd);
 
                 eventNameTextView.setText(event.getTitle());
-                eventDateTextView.setText(event.getStartDate());
+                eventDateTextView.setText(displayDateTime);
                 eventLocationTextView.setText(event.getLocation());
 
                 try {
