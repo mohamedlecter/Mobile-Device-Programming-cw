@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,7 +73,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
 
             // Button for redirecting to the home page
-            Button backButton = findViewById(R.id.button3);
+            ImageView backButton = findViewById(R.id.buttonBackToHome);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

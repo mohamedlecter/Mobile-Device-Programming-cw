@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void validateEmailFormat(String email) {
+    public void validateEmailFormat(String email) {
         boolean isValid = isValidEmail(email);
 
         if (!isValid) {
@@ -194,14 +194,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void validatePassword(String password) {
+    public void validatePassword(String password) {
         if (password.isEmpty()) {
             passwordField.setError("Password cannot be empty");
         } else {
             passwordField.setError(null);
         }
     }
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         // Define a simple regex pattern for email validation
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
         return email.matches(emailPattern);
     }
 
-    private void updateSignInButtonState() {
+    public void updateSignInButtonState() {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 

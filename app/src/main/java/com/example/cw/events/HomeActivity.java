@@ -36,9 +36,9 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements EventAdapter.OnItemClickListener {
 
-    private Api api;
+    public Api api;
     private List<Event> events;
-    private EventAdapter adapter;
+    public EventAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
     private RecyclerView recyclerView;
     private SessionManager sessionManager;
@@ -112,7 +112,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
 
     }
 
-    private void getEvents() {
+    public void getEvents() {
         Call<List<Event>> call;
 
         boolean isAdmin = sessionManager.isAdmin();

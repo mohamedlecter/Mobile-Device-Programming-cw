@@ -37,7 +37,7 @@ import retrofit2.Response;
 
 public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItemClickListener {
 
-    private Api api;
+    public Api api;
     private List<Job> jobs;
     private SwipeRefreshLayout swipeRefreshLayout; // to handle pull to refresh
     private RecyclerView recyclerView;
@@ -112,7 +112,7 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         }));
     }
 
-    private void getJobs() {
+    public void getJobs() {
         Call<List<Job>> call;
 
         boolean isAdmin = sessionManager.isAdmin();
