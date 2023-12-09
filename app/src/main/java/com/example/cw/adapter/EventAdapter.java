@@ -134,7 +134,7 @@
     
                     try {
     //                http://:4000/uploads/1700915869210ICN.jpg
-                        String serverBaseUrl = "http://10.0.2.2:4000";
+                        String serverBaseUrl = "https://mdp-server-07db49d63c9e.herokuapp.com";
     //                    String serverBaseUrl = "http://localhost:4000";
                         String imagePath = serverBaseUrl + "/" + event.getImagePath().replace("\\", "/");
                         Log.d("ImagePath 2", imagePath);
