@@ -25,7 +25,9 @@
         private OnItemClickListener itemClickListener;
         private OnEditClickListener editClickListener;
         private OnDeleteClickListener deleteClickListener;
-    
+        private EventAdapter.OnShareClickListener shareClickListener;
+
+
         public interface OnItemClickListener {
             void onItemClick(int position);
         }
@@ -36,6 +38,9 @@
     
         public interface OnDeleteClickListener {
             void onDeleteClick(int position);
+        }
+        public interface OnShareClickListener {
+            void onShareClick(int position);
         }
     
         public EventAdapter(List<Event> events) {
@@ -81,6 +86,15 @@
                     }
                 }
             });
+
+            holder.shareEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (shareClickListener != null) {
+                        shareClickListener.onShareClick(adapterPosition);
+                    }
+                }
+            });
         }
     
         @Override
@@ -99,6 +113,9 @@
         public void setOnDeleteClickListener(OnDeleteClickListener listener) {
             this.deleteClickListener = listener;
         }
+        public void setShareClickListener(EventAdapter.OnShareClickListener listener) {
+            this.shareClickListener = listener;
+        }
     
         public static class EventViewHolder extends RecyclerView.ViewHolder {
             private final TextView eventNameTextView;
@@ -108,7 +125,8 @@
             private ImageButton editEventButton;
     
             private  ImageButton deleteEventButton;
-    
+            private ImageView shareEventButton;
+
             public EventViewHolder(@NonNull View itemView) {
                 super(itemView);
                 eventNameTextView = itemView.findViewById(R.id.eventName);
@@ -117,6 +135,9 @@
                 eventImageView = itemView.findViewById(R.id.eventImage);
                 editEventButton = itemView.findViewById(R.id.editEvent);
                 deleteEventButton = itemView.findViewById(R.id.deleteEvent);
+
+                shareEventButton = itemView.findViewById(R.id.adminEventButtonShare);
+
             }
     
             public void bind(Event event) {
@@ -163,10 +184,15 @@
     
                     // Set the visibility of the eventActions LinearLayout based on admin status
                     LinearLayout eventActionsLayout = itemView.findViewById(R.id.eventActions);
+                    ImageView buttonShare = itemView.findViewById(R.id.adminEventButtonShare);
+
                     if (isAdmin) {
                         eventActionsLayout.setVisibility(View.VISIBLE);
+                        buttonShare.setVisibility(View.VISIBLE);
+
                     } else {
                         eventActionsLayout.setVisibility(View.GONE);
+                        buttonShare.setVisibility(View.GONE);
                     }
     
                 }

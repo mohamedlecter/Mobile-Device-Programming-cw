@@ -61,6 +61,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             public void onSuccess() {
                                 Log.d("Picasso", "Image loaded successfully");
                             }
+
                             @Override
                             public void onError(Exception e) {
                                 Log.e("Picasso", "Error loading image: " + e.getMessage());
@@ -71,6 +72,23 @@ public class EventDetailsActivity extends AppCompatActivity {
                 // Log an error or provide a placeholder image if needed
                 Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
             }
+
+            ImageView shareButton = findViewById(R.id.buttonShare);
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+
+                    String shareText = String.format("Check out this event: %s on %s at %s",
+                            event.getTitle(), event.getStartDate(), event.getLocation());
+
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+
+                    startActivity(Intent.createChooser(shareIntent, "Share Event"));
+
+                }
+            });
 
             // Button for redirecting to the home page
             ImageView backButton = findViewById(R.id.buttonBackToHome);

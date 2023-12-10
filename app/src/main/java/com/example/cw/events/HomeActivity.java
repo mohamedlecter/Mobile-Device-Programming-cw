@@ -140,14 +140,25 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                         adapter = new EventAdapter(events);
 
                         // Set the click listener for regular item click
-                        adapter.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
+
+                        if (!isAdmin) {
+                            adapter.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(int position) {
+                                    // Handle regular item click, e.g., redirect to details page
+                                    Event clickedEvent = events.get(position);
+                                    Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class);
+                                    intent.putExtra("event", clickedEvent);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+
+                        adapter.setShareClickListener(new EventAdapter.OnShareClickListener() {
                             @Override
-                            public void onItemClick(int position) {
-                                // Handle regular item click, e.g., redirect to details page
-                                Event clickedEvent = events.get(position);
-                                Intent intent = new Intent(HomeActivity.this, EventDetailsActivity.class);
-                                intent.putExtra("event", clickedEvent);
-                                startActivity(intent);
+                            public void onShareClick(int position) {
+                                Event selectedEvent = events.get(position);
+                                shareEvent(selectedEvent);
                             }
                         });
 
@@ -220,6 +231,26 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         });
     }
 
+    private void shareEvent(Event event) {
+        // Create a message to share on social media
+        String shareMessage = "Check out this new event that i posted on Notts App!\n\n"
+                + "Title: " + event.getTitle() + "\n"
+                + "Description: " + event.getDescription() + "\n"
+                + "Location: " + event.getLocation() + "\n"
+                + "Start Date: " + event.getStartDate() + "\n"
+                + "End Date: " + event.getFinishDate();
+
+        // Create an Intent to share the message
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+
+        // Create a chooser dialog to let the user choose the app for sharing
+        Intent chooser = Intent.createChooser(shareIntent, "Share via");
+
+        startActivity(chooser);
+    }
+
     private void showDeleteConfirmationDialog(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Deletion");
@@ -265,6 +296,7 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
                     Log.e("DeleteEvent", "Unsuccessful response: " + response.message());
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("DeleteEvent", "Error: " + t.getMessage());

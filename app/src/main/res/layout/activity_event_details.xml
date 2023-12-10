@@ -14,29 +14,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
             android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
             >
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/arrow_left"
-                app:tint="@color/black"
-                android:backgroundTint="#00FFFFFF"
-                android:id="@+id/buttonBackToHome"
-
-                />
-
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="Event Details"
-                android:textAlignment="center"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/buttonBackToHome"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#00FFFFFF"
+                    android:src="@drawable/arrow_left"
+                    app:tint="@color/black" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:text="Event Details"
+                    android:textAlignment="center"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:id="@+id/buttonShare"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/share"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 

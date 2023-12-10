@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     private JobAdapter.OnItemClickListener itemClickListener;
     private JobAdapter.OnEditClickListener editClickListener;
     private JobAdapter.OnDeleteClickListener deleteClickListener;
+    private JobAdapter.OnShareClickListener shareClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -32,6 +34,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
     public interface OnDeleteClickListener {
         void onDeleteClick(int position);
+    }
+    public interface OnShareClickListener {
+        void onShareClick(int position);
     }
 
     public JobAdapter(List<Job> jobs) {
@@ -78,6 +83,15 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
                 }
             }
         });
+
+        holder.shareJobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (shareClickListener != null) {
+                    shareClickListener.onShareClick(adapterPosition);
+                }
+            }
+        });
     }
 
     @Override
@@ -96,6 +110,11 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         this.deleteClickListener = listener;
     }
 
+    public void setShareClickListener(JobAdapter.OnShareClickListener listener) {
+        this.shareClickListener = listener;
+    }
+
+
     public static class JobViewHolder extends RecyclerView.ViewHolder {
         private final TextView jobTitleTextView;
         private final TextView jobLocationTextView;
@@ -105,6 +124,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         private ImageButton editJobButton;
 
         private  ImageButton deleteJobButton;
+        private ImageView shareJobButton;
 
         public JobViewHolder(@NonNull View itemView ) {
             super(itemView);
@@ -115,6 +135,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
             editJobButton = itemView.findViewById(R.id.editJob);
             deleteJobButton = itemView.findViewById(R.id.deleteJob);
+            shareJobButton = itemView.findViewById(R.id.adminButtonShare);
         }
 
         public void bind(Job job) {
@@ -132,16 +153,18 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             jobDurationTextView.setText(displayjobDuration);
             jobSalaryTextView.setText(displaySalary);
 
-
             // Check if the user is an admin
             SessionManager sessionManager = new SessionManager(itemView.getContext());
             boolean isAdmin = sessionManager.isAdmin();
 
             LinearLayout jobActionsLayout = itemView.findViewById(R.id.jobActions);
+            ImageView buttonShare = itemView.findViewById(R.id.adminButtonShare);
             if (isAdmin) {
                 jobActionsLayout.setVisibility(View.VISIBLE);
+                buttonShare.setVisibility(View.VISIBLE);
             } else {
                 jobActionsLayout.setVisibility(View.GONE);
+                buttonShare.setVisibility(View.GONE);
             }
         }
 

@@ -49,6 +49,23 @@ public class JobDetailsActivity extends AppCompatActivity {
             jobOrganizer.setText(job.getJobOrganizer());
             jobDesc.setText(job.getDescription());
 
+            ImageView shareButton = findViewById(R.id.buttonShare);
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+
+                    String shareText = String.format("Check out this job: %s from %s at %s",
+                            job.getTitle(), String.format("%s - %s",job.getJobDurationStart(), job.getJobDurationEnd()), job.getLocation());
+
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+
+                    startActivity(Intent.createChooser(shareIntent, "Share Event"));
+
+                }
+            });
+
             ImageView backButton = findViewById(R.id.buttonBackToJobs);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override

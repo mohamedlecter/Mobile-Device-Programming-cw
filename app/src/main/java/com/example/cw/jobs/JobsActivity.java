@@ -3,6 +3,8 @@ package com.example.cw.jobs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,12 +20,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.cw.CampusLinks;
 import com.example.cw.SessionManager;
 import com.example.cw.api.Api;
-import com.example.cw.events.EventDetailsActivity;
 import com.example.cw.events.HomeActivity;
 import com.example.cw.R;
 import com.example.cw.api.RetrofitClient;
 import com.example.cw.adapter.JobAdapter;
-import com.example.cw.model.Event;
 import com.example.cw.model.Job;
 import com.example.cw.profile.profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -135,17 +135,18 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
                         JobAdapter adapter = new JobAdapter(jobs);
                         // Set the click listener for edit item click
 
-
-                        adapter.setOnItemClickListener(new JobAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
+                        if (!isAdmin) {
+                            adapter.setOnItemClickListener(new JobAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(int position) {
                                     // Handle regular item click, e.g., redirect to details page
                                     Job selectedJob = jobs.get(position);
                                     Intent intent = new Intent(JobsActivity.this, JobDetailsActivity.class);
                                     intent.putExtra("job", selectedJob);
                                     startActivity(intent);
-                            }
-                        });
+                                }
+                            });
+                        }
                         adapter.setOnEditClickListener(new JobAdapter.OnEditClickListener() {
                             @Override
                             public void onEditClick(int position) {
@@ -160,6 +161,14 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
                             @Override
                             public void onDeleteClick(int position) {
                                 showDeleteConfirmationDialog(position);
+                            }
+                        });
+
+                        adapter.setShareClickListener(new JobAdapter.OnShareClickListener() {
+                            @Override
+                            public void onShareClick(int position) {
+                                Job selectedJob = jobs.get(position);
+                                shareJob(selectedJob);
                             }
                         });
 
@@ -190,6 +199,29 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         Intent intent = new Intent(JobsActivity.this, JobDetailsActivity.class);
         intent.putExtra("job", clickedJob);
         startActivity(intent);
+    }
+
+    private void shareJob(Job job) {
+        // Create a message to share on social media
+        String shareMessage = "Check out this new job opportunity that i posted on Notts App!\n\n"
+                + "Title: " + job.getTitle() + "\n"
+                + "Description: " + job.getDescription() + "\n"
+                + "Company: " + job.getCompany() + "\n"
+                + "Location: " + job.getLocation() + "\n"
+                + "Salary: $" + job.getSalary() + "\n"
+                + "Start Date: " + job.getJobDurationStart() + "\n"
+                + "End Date: " + job.getJobDurationEnd();
+
+        // Create an Intent to share the message
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+
+        // Create a chooser dialog to let the user choose the app for sharing
+        Intent chooser = Intent.createChooser(shareIntent, "Share via");
+
+        startActivity(chooser);
+
     }
 
     private void onSeeAllClick() {
