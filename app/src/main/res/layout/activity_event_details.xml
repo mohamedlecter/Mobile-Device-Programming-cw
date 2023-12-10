@@ -194,10 +194,10 @@
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/purchaseButton"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:text="Buy Ticket 20 RM" />
+                android:text="Buy Ticket" />
 
         </LinearLayout>
 

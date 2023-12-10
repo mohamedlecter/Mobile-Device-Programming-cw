@@ -38,7 +38,6 @@ public class EventDateFormatUtils {
             return calendar.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
-            // Handle the parse exception, return an appropriate default value, or throw it
             return -1;
         }
     }

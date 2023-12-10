@@ -16,6 +16,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -63,6 +64,20 @@ public interface Api {
     @POST("event/")
     Call<Event> postEvent(
             @Header("Authorization") String authorizationHeader,
+            @Part MultipartBody.Part image,
+            @Part("title") RequestBody title,
+            @Part("description") RequestBody description,
+            @Part("location") RequestBody location,
+            @Part("startDate") RequestBody startDate,
+            @Part("finishDate") RequestBody finishDate,
+            @Part("eventTimeStart") RequestBody eventTimeStart,
+            @Part("eventTimeEnd") RequestBody eventTimeEnd
+    );
+    @Multipart
+    @PATCH("event/{eventId}")
+    Call<Event> updateEvent(
+            @Header("Authorization") String authorizationHeader,
+            @Path("eventId") String eventId,
             @Part MultipartBody.Part image,
             @Part("title") RequestBody title,
             @Part("description") RequestBody description,
