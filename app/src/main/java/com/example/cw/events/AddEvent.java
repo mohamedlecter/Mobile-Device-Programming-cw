@@ -1,39 +1,21 @@
 package com.example.cw.events;
 
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import static com.example.cw.events.EventUtils.getRealPathFromUri;
 
-import android.Manifest;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.ActivityNotFoundException;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.cw.R;
 import com.example.cw.SessionManager;
@@ -68,9 +50,6 @@ public class AddEvent extends AppCompatActivity {
     private Event event; // Declare the Event object
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int STORAGE_PERMISSION_CODE = 100;
-
-    private static final String TAG = "PERMISSION_TAG";
 
     private ImageView imageViewEventPoster;
     private ImageView backButton;
@@ -87,7 +66,12 @@ public class AddEvent extends AppCompatActivity {
         api = RetrofitClient.getInstance().getApi(); // gets the api from the retrofit client
 
 
-        // Initialize UI elements
+        initializeUI();
+        setupEventHandling();
+        setupTextWatchers();
+    }
+
+    private void initializeUI() {
         eventTitleEditText = findViewById(R.id.eventTitle);
         eventDescEditText = findViewById(R.id.eventDsc);
         eventLocationEditText = findViewById(R.id.eventLocation);
@@ -100,45 +84,47 @@ public class AddEvent extends AppCompatActivity {
         backButton = findViewById(R.id.buttonBackToEvents);
         saveButton = findViewById(R.id.buttonSave);
 
-
         sessionManager = new SessionManager(this);
         calendarStart = Calendar.getInstance();
         calendarEnd = Calendar.getInstance();
         event = new Event(); // Initialize the Event object
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an intent to go back to the home page
-                Intent homeIntent = new Intent(AddEvent.this, HomeActivity.class);
-                startActivity(homeIntent);
-            }
+    }
+
+    private void setupEventHandling() {
+        backButton.setOnClickListener(v -> {
+            // Create an intent to go back to the home page
+            Intent homeIntent = new Intent(AddEvent.this, HomeActivity.class);
+            startActivity(homeIntent);
         });
 
-        btnPickImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickImage();
-            }
-        });
+        btnPickImage.setOnClickListener(view -> EventUtils.pickImage(AddEvent.this, imageViewEventPoster, event));
 
-        // Set up the click listener for the date and time picker
-        startDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateTimePicker(true); // Pass true to indicate the start date/time
-            }
-        });
+        startDateTextView.setOnClickListener(v -> EventUtils.showDateTimePicker(
+                AddEvent.this,
+                true,
+                startDateTextView,
+                endDateTextView,
+                calendarStart,
+                calendarEnd,
+                event
+        ));
 
-        endDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateTimePicker(false); // Pass false to indicate the end date/time
-            }
-        });
+        endDateTextView.setOnClickListener(v -> EventUtils.showDateTimePicker(
+                AddEvent.this,
+                false,
+                startDateTextView,
+                endDateTextView,
+                calendarStart,
+                calendarEnd,
+                event
+        ));
 
-        // TextWatchers to perform real-time validation
-        eventTitleEditText.addTextChangedListener(new TextWatcher() {
+        saveButton.setOnClickListener(v -> makeApiCall());
+    }
+
+    private void setupTextWatchers() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Not used
@@ -146,7 +132,14 @@ public class AddEvent extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                validateEventTitle(charSequence.toString());
+                int i = charSequence.hashCode();
+                if (i == R.id.eventTitle) {
+                    validateEventTitle(charSequence.toString());
+                } else if (i == R.id.eventDsc) {
+                    validateEventDescription(charSequence.toString());
+                } else if (i == R.id.eventLocation) {
+                    validateEventLocation(charSequence.toString());
+                }
                 updateSaveButtonState();
             }
 
@@ -154,43 +147,11 @@ public class AddEvent extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 // Not used
             }
-        });
+        };
 
-        eventDescEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Not used
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                validateEventDescription(charSequence.toString());
-                updateSaveButtonState();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Not used
-            }
-        });
-
-        eventLocationEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Not used
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                validateEventLocation(charSequence.toString());
-                updateSaveButtonState();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Not used
-            }
-        });
+        eventTitleEditText.addTextChangedListener(textWatcher);
+        eventDescEditText.addTextChangedListener(textWatcher);
+        eventLocationEditText.addTextChangedListener(textWatcher);
 
         endDateTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -209,104 +170,61 @@ public class AddEvent extends AppCompatActivity {
                 // Not used
             }
         });
-        saveButton.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void makeApiCall() {
+        event.setTitle(eventTitleEditText.getText().toString());
+        event.setDescription(eventDescEditText.getText().toString());
+        event.setLocation(eventLocationEditText.getText().toString());
+
+        event.setEventTimeStart(calendarStart.getTime().toString());
+        event.setEventTimeEnd(calendarEnd.getTime().toString());
+
+        String userToken = sessionManager.getUserToken();
+        String authorizationHeader = "Bearer " + userToken;
+
+        // Makes the API call
+        Call<Event> call = api.postEvent(authorizationHeader,
+                createPartFromImage(event.getImagePath()),
+                createPartFromString(event.getTitle()),
+                createPartFromString(event.getDescription()),
+                createPartFromString(event.getLocation()),
+                createPartFromString(event.getStartDate()),
+                createPartFromString(event.getFinishDate()),
+                createPartFromString(event.getEventTimeStart()),
+                createPartFromString(event.getEventTimeEnd())
+        );
+        call.enqueue(new Callback<Event>() {
             @Override
-            public void onClick(View v) {
-                // Populate the Event object with data
-                event.setTitle(eventTitleEditText.getText().toString());
-                event.setDescription(eventDescEditText.getText().toString());
-                event.setLocation(eventLocationEditText.getText().toString());
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if (response.isSuccessful()) {
+                    Event newEvent = response.body();
+                    if (newEvent != null) {
+                        Log.d("AddEvent", "New Event ID: " + newEvent.getId());
 
-                event.setEventTimeStart(calendarStart.getTime().toString());
-                event.setEventTimeEnd(calendarEnd.getTime().toString());
-
-                String userToken = sessionManager.getUserToken();
-                String authorizationHeader = "Bearer " + userToken;
-
-                // Makes the API call
-                Call<Event> call = api.postEvent(authorizationHeader,
-                        createPartFromImage(event.getImagePath()),
-                        createPartFromString(event.getTitle()),
-                        createPartFromString(event.getDescription()),
-                        createPartFromString(event.getLocation()),
-                        createPartFromString(event.getStartDate()),
-                        createPartFromString(event.getFinishDate()),
-                        createPartFromString(event.getEventTimeStart()),
-                        createPartFromString(event.getEventTimeEnd())
-                );
-                call.enqueue(new Callback<Event>() {
-                    @Override
-                    public void onResponse(Call<Event> call, Response<Event> response) {
-                        if (response.isSuccessful()) {
-                            Event newEvent = response.body();
-                            if (newEvent != null) {
-                                Log.d("AddEvent", "New Event ID: " + newEvent.getId());
-
-                                Intent homeIntent = new Intent(AddEvent.this, HomeActivity.class);
-                                startActivity(homeIntent);
-                                finish();
-                            }
-                        } else {
-                            try {
-                                String errorBody = response.errorBody().string();
-                                Log.e("AddEvent", "Error response body: " + errorBody);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        Intent homeIntent = new Intent(AddEvent.this, HomeActivity.class);
+                        startActivity(homeIntent);
+                        finish();
                     }
-
-                    @Override
-                    public void onFailure(Call<Event> call, Throwable t) {
-                        Log.e("AddEvent", "API call failed: " + t.getMessage());
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("AddEvent", "Error response body: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                });
+                }
             }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.e("AddEvent", "API call failed: " + t.getMessage());
+            }
+
         });
-    }
-
-    private void pickImage() {
-
-        if (checkPermission()) {
-            Log.d(TAG, "onClick: Permissions already granted...");
-            startImagePicker();
-
-        } else {
-            Log.d(TAG, "onClick: Permissions was not granted, request...");
-            requestPermission();
-        }
-    }
-
-
-    private void requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            //Android is 11(R) or above
-            try {
-                Log.d(TAG, "requestPermission: try");
-
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                Uri uri = Uri.fromParts("package", this.getPackageName(), null);
-                intent.setData(uri);
-                storageActivityResultLauncher.launch(intent);
-            } catch (Exception e) {
-                Log.e(TAG, "requestPermission: catch", e);
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                storageActivityResultLauncher.launch(intent);
-            }
-        } else {
-            //Android is below 11(R)
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    STORAGE_PERMISSION_CODE
-            );
-        }
-
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -314,7 +232,7 @@ public class AddEvent extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri selectedImageUri = data.getData();
-            String imagePath = getRealPathFromUri(selectedImageUri);
+            String imagePath = getRealPathFromUri(AddEvent.this, selectedImageUri);
 
             // Update the ImageView in XML layout
             imageViewEventPoster.setImageURI(selectedImageUri);
@@ -323,97 +241,6 @@ public class AddEvent extends AppCompatActivity {
             event.setImagePath(imagePath);
         }
     }
-
-
-    private ActivityResultLauncher<Intent> storageActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Log.d(TAG, "onActivityResult: ");
-                    //here we will handle the result of our intent
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        //Android is 11(R) or above
-                        if (Environment.isExternalStorageManager()) {
-                            //Manage External Storage Permission is granted
-                            Log.d(TAG, "onActivityResult: Manage External Storage Permission is granted");
-                            startImagePicker();
-                        } else {
-                            //Manage External Storage Permission is denied
-                            Log.d(TAG, "onActivityResult: Manage External Storage Permission is denied");
-                            Toast.makeText(AddEvent.this, "Manage External Storage Permission is denied", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        //Android is below 11(R)
-                    }
-                }
-            }
-    );
-
-
-    public boolean checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            //Android is 11(R) or above
-            return Environment.isExternalStorageManager();
-        } else {
-            //Android is below 11(R)
-            int write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            int read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-            return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED;
-        }
-    }
-
-    /*Handle permission request results*/
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-            if (grantResults.length > 0) {
-                //check each permission if granted or not
-                boolean write = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                boolean read = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                if (write && read) {
-                    //External Storage permissions granted
-                    Log.d(TAG, "onRequestPermissionsResult: External Storage permissions granted");
-                    startImagePicker();
-                } else {
-                    //External Storage permission denied
-                    Log.d(TAG, "onRequestPermissionsResult: External Storage permission denied");
-                    Toast.makeText(this, "External Storage permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    private void startImagePicker() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-
-        Intent chooserIntent = Intent.createChooser(pickIntent, "Select Image");
-        try {
-            startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Helper method to get the real path from the content URI
-    private String getRealPathFromUri(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(column_index);
-        cursor.close();
-
-        return path;
-    }
-
 
     private RequestBody createPartFromString(String value) {
         return RequestBody.create(MultipartBody.FORM, value);
@@ -430,57 +257,6 @@ public class AddEvent extends AppCompatActivity {
         }
     }
 
-
-    private void showDateTimePicker(final boolean isStartDate) {
-        final Calendar calendar = Calendar.getInstance();
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (DatePicker datePicker, int year, int month, int day) -> {
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, month);
-                    calendar.set(Calendar.DAY_OF_MONTH, day);
-
-                    // Show TimePicker after selecting the date
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-                            this,
-                            (TimePicker timePicker, int hour, int minute) -> {
-                                calendar.set(Calendar.HOUR_OF_DAY, hour);
-                                calendar.set(Calendar.MINUTE, minute);
-
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                                String selectedTime = sdf.format(calendar.getTime());
-
-                                SimpleDateFormat date = new SimpleDateFormat("dd, MMM yyyy", Locale.getDefault());
-                                String selectedDate = date.format(calendar.getTime());
-
-
-                                // Set the selected date and time to the appropriate TextView
-                                if (isStartDate) {
-                                    startDateTextView.setText(selectedTime + " " + selectedDate);
-                                    calendarStart = calendar;
-                                    event.setEventTimeStart(selectedTime);
-                                    event.setStartDate(selectedDate);
-                                } else {
-                                    endDateTextView.setText(selectedTime + " " + selectedDate);
-                                    calendarEnd = calendar;
-                                    event.setEventTimeEnd(selectedTime);
-                                    event.setFinishDate(selectedDate);
-
-                                }
-                            },
-                            calendar.get(Calendar.HOUR_OF_DAY),
-                            calendar.get(Calendar.MINUTE),
-                            false
-                    );
-                    timePickerDialog.show();
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.show();
-    }
 
     private void validateEventTitle(String eventTitle) {
         if (eventTitle.isEmpty()) {
