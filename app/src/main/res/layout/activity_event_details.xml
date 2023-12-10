@@ -55,11 +55,21 @@
                 >
 
                 <ImageView
+                    android:id="@+id/buttonCalender"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/calender"
+
+                    />
+
+                <ImageView
                     android:id="@+id/buttonShare"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/share"
+                    android:layout_marginLeft="5dp"
                     />
+
             </LinearLayout>
 
         </LinearLayout>

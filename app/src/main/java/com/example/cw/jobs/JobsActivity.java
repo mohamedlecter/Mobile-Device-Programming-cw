@@ -3,14 +3,11 @@ package com.example.cw.jobs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,7 +57,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout); // gets the swipeRefreshLayout
         recyclerView = findViewById(R.id.jobsRecyclerView);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize SessionManager
@@ -81,7 +77,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         LinearLayout jobsBtn = findViewById(R.id.jobs_Btn);
         LinearLayout linksBtn = findViewById(R.id.links_Btn);
         LinearLayout profileBtn = findViewById(R.id.Profile_Btn);
-
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,10 +167,7 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
                             }
                         });
 
-
                         recyclerView.setAdapter(adapter);
-
-
                     } else {
                         // Handle case where no jobs are returned
                     }
@@ -221,7 +213,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         Intent chooser = Intent.createChooser(shareIntent, "Share via");
 
         startActivity(chooser);
-
     }
 
     private void onSeeAllClick() {
@@ -243,7 +234,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 String jobId = jobs.get(position).getId();
                 String userToken = sessionManager.getUserToken();
                 deleteJobApi(jobId, userToken);
