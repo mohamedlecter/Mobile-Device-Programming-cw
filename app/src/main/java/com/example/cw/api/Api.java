@@ -73,6 +73,7 @@ public interface Api {
             @Part("eventTimeStart") RequestBody eventTimeStart,
             @Part("eventTimeEnd") RequestBody eventTimeEnd
     );
+
     @Multipart
     @PATCH("event/{eventId}")
     Call<Event> updateEvent(
@@ -107,6 +108,14 @@ public interface Api {
             @Header("Authorization") String authorizationHeader,
             @Body Job job
     );
+
+    @PATCH("job/{jobId}")
+    Call<Job> updateJob(
+            @Header("Authorization") String authorizationHeader,
+            @Path("jobId") String jobId,
+            @Body Job updatedJob
+    );
+
 
     @GET("link/")
     Call<List<Link>> getLinks();

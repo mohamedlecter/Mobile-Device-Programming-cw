@@ -65,7 +65,7 @@ public class CampusLinks extends AppCompatActivity {
             public void onClick(View v) {
                 // Check network availability before opening the URL
                 if (isNetworkAvailable()) {
-                    String url = "https://example.com";
+                    String url = "https://stackoverflow.com/";
                     openUrlInBrowser(url);
                 } else {
                     // Handle the case when the network is not available

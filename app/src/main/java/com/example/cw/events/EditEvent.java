@@ -80,33 +80,7 @@ public class EditEvent extends AppCompatActivity {
                 eventLocationEditText.setText(selectedEvent.getLocation());
                 startDateEditText.setText(selectedEvent.getStartDate());
                 endDateEditText.setText(selectedEvent.getFinishDate());
-
-                Log.d("edit event", selectedEvent.getImagePath());
-                try {
-//                http://:4000/uploads/1700915869210ICN.jpg
-                    String serverBaseUrl = "https://mdp-server-07db49d63c9e.herokuapp.com";
-//                    String serverBaseUrl = "http://localhost:4000";
-                    String imagePath = serverBaseUrl + "/" + selectedEvent.getImagePath().replace("\\", "/");
-                    Log.d("ImagePath 2", imagePath);
-                    Picasso.get()
-                            .load(imagePath)
-                            .into(editImageViewEvent, new com.squareup.picasso.Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d("Picasso", "Image loaded successfully");
-                                }
-
-                                @Override
-                                public void onError(Exception e) {
-                                    Log.e("Picasso", "Error loading image: " + e.getMessage());
-                                }
-                            });
-
-                } catch (IllegalArgumentException e) {
-                    // Log an error or provide a placeholder image if needed
-                    Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
-                }
-
+                loadImageWithPicasso(selectedEvent.getImagePath());
             }
         }
 
@@ -155,7 +129,6 @@ public class EditEvent extends AppCompatActivity {
                 selectedEvent.setTitle(eventTitleEditText.getText().toString());
                 selectedEvent.setDescription(eventDscEditText.getText().toString());
                 selectedEvent.setLocation(eventLocationEditText.getText().toString());
-
 
                 // Create a new Event object to store the updated values
                 Event updatedEvent = new Event();
@@ -223,6 +196,31 @@ public class EditEvent extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void loadImageWithPicasso(String imagePath) {
+        try {
+            String serverBaseUrl = "https://mdp-server-07db49d63c9e.herokuapp.com";
+            String imageUrl = serverBaseUrl + "/" + imagePath.replace("\\", "/");
+            Log.d("ImagePath 2", imageUrl);
+            Picasso.get()
+                    .load(imageUrl)
+                    .into(editImageViewEvent, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("Picasso", "Image loaded successfully");
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("Picasso", "Error loading image: " + e.getMessage());
+                        }
+                    });
+
+        } catch (IllegalArgumentException e) {
+            Log.e("EventAdapter", "Failed to load image: " + e.getMessage());
+        }
     }
 
     private void update(Event updatedEvent) {
