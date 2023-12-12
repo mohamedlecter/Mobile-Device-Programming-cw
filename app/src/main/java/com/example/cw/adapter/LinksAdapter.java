@@ -1,8 +1,5 @@
 package com.example.cw.adapter;
 
-
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +60,6 @@ public class LinksAdapter extends RecyclerView.Adapter<LinksAdapter.LinksViewHol
             this.listener = listener;
             titleTextView = itemView.findViewById(R.id.linkTitle);
             descriptionTextView = itemView.findViewById(R.id.lnkDescription);
-
         }
 
         @Override

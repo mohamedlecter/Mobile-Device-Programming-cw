@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
-        onSeeAllClick();
         getEvents();
         BottomNavigation();
         setupAddButtonListener();
@@ -207,17 +206,6 @@ public class HomeActivity extends AppCompatActivity implements EventAdapter.OnIt
         startActivity(intent);
     }
 
-    private void onSeeAllClick() {
-        TextView seeAllTextView = findViewById(R.id.seeALl);
-        seeAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle click event, e.g., redirect to the Events page
-                Intent intent = new Intent(HomeActivity.this, Events.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     private void setupAddButtonListener() {
         FloatingActionButton addButtonLayout = findViewById(R.id.buttonAdd);

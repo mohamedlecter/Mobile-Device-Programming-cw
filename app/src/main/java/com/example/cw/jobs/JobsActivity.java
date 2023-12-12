@@ -45,7 +45,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
         initView();
-        onSeeAllClick();
         getJobs();
         BottomNavigation();
         setupAddButtonListener();
@@ -215,16 +214,6 @@ public class JobsActivity extends AppCompatActivity implements JobAdapter.OnItem
         startActivity(chooser);
     }
 
-    private void onSeeAllClick() {
-        TextView seeAllTextView = findViewById(R.id.seeALl);
-        seeAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(JobsActivity.this, SeeAllJobs.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     private void showDeleteConfirmationDialog(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

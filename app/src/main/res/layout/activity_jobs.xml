@@ -34,15 +34,7 @@
                 android:text="Available jobs"
                 android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/seeALl"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:drawableEnd="@drawable/seeall"
-                android:text="See All"
-                android:textAlignment="center"
-                android:textColor="@color/Primary_Gray" />
+
 
         </LinearLayout>
 

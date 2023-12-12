@@ -25,8 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminLoginActivity extends AppCompatActivity {
-    private EditText emailField;
-    private EditText passwordField;
+    private EditText nameField, emailField, passwordField;
     private SessionManager sessionManager;
 
     @Override
@@ -37,15 +36,17 @@ public class AdminLoginActivity extends AppCompatActivity {
         // Initialize SessionManager
         sessionManager = new SessionManager(this);
 
+        nameField = findViewById(R.id.nameTextField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
     }
 
     public void loginClick(View view) {
+        String name = nameField.getText().toString();
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
 
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().adminLogin(email, password);
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().adminSignp(name, email, password, true);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -67,7 +68,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                         Toast.makeText(AdminLoginActivity.this, s, Toast.LENGTH_SHORT).show();
 
 
-                        Intent intent = new Intent(AdminLoginActivity.this, HomeActivity.class); // If login is successful, navigate to Home
+                        Intent intent = new Intent(AdminLoginActivity.this, LoginActivity.class);
                         startActivity(intent);
 
                     } catch (JSONException e) {

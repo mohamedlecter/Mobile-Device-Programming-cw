@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
-                android:text="Sign in as Admin" />
+                android:text="Sign up as Admin" />
         </LinearLayout>
 
     </LinearLayout>

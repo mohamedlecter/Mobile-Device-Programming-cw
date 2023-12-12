@@ -33,7 +33,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="21dp"
-                android:text="Admin Sign In" />
+                android:text="Admin Sign Up" />
+
+            <EditText
+                android:id="@+id/nameTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_shape"
+                android:drawableStart="@drawable/mail"
+                android:drawablePadding="15dp"
+                android:hint="Name"
+                android:inputType="text"
+                android:padding="15dip"
+                tools:ignore="TextFields" />
 
             <EditText
                 android:id="@+id/emailField"
@@ -60,32 +73,6 @@
                 android:inputType="textPassword"
                 android:padding="15dip" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <Switch
-                    android:id="@+id/switch1"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="191dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Remember Me" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Forgot Password?" />
-            </LinearLayout>
 
             <Button
                 android:layout_width="271dp"
@@ -111,15 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
-                android:text="Don’t have an account?  Sign up" />
+                android:text="Don’t have an account?  Sign in" />
 
-            <TextView
-                android:id="@+id/signInAsAdmin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal"
-                android:text="Sign in as Admin" />
         </LinearLayout>
 
 

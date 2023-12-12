@@ -39,10 +39,12 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("user/admin/login")
-    Call<ResponseBody> adminLogin(
+    @POST("user/admin/signup")
+    Call<ResponseBody> adminSignp(
+            @Field("name") String name,
             @Field("email") String email,
-            @Field("password") String password
+            @Field("password") String password,
+            @Field("isAdmin") boolean isAdmin
     );
 
     @GET("event/")
