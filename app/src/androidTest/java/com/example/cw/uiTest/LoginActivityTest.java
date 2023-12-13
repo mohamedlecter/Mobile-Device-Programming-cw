@@ -21,10 +21,24 @@ public class LoginActivityTest {
     public ActivityScenarioRule<LoginActivity> activityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
     @Test
-    public void clickLoginButton_opensLoginUi() {
+    public void validUserTest() {
 
         Espresso.onView(ViewMatchers.withId(R.id.emailField))
                 .perform(ViewActions.typeText("test@test.com"));
+
+        Espresso.onView(ViewMatchers.withId(R.id.passwordField))
+                .perform(ViewActions.typeText("test"));
+
+        Espresso.onView(ViewMatchers.withId(R.id.signInButton))
+                .perform(ViewActions.click());
+
+    }
+
+    @Test
+    public void unValidUserTest() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.emailField))
+                .perform(ViewActions.typeText("test!testcom"));
 
         Espresso.onView(ViewMatchers.withId(R.id.passwordField))
                 .perform(ViewActions.typeText("test"));

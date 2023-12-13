@@ -1,4 +1,5 @@
-package com.example.cw;
+package com.example.cw.mockTests;
+
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -21,13 +22,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
-public class GetEventsTest {
+public class EventsTest {
 
     @Rule
     public ActivityScenarioRule<HomeActivity> hommeActivityScenarioRule = new ActivityScenarioRule<>(HomeActivity.class);
@@ -58,4 +61,6 @@ public class GetEventsTest {
         // Perform the test
         hommeActivityScenarioRule.getScenario().onActivity(HomeActivity::getEvents);
     }
+
+
 }

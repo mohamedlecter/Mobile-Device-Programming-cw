@@ -68,7 +68,7 @@ public class AddEvent extends AppCompatActivity {
 
         initializeUI();
         setupEventHandling();
-        setupTextWatchers();
+
     }
 
     private void initializeUI() {
@@ -120,11 +120,9 @@ public class AddEvent extends AppCompatActivity {
                 event
         ));
 
-        saveButton.setOnClickListener(v -> makeApiCall());
-    }
 
-    private void setupTextWatchers() {
-        TextWatcher textWatcher = new TextWatcher() {
+        // TextWatchers to perform real-time validation
+        eventTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Not used
@@ -132,14 +130,7 @@ public class AddEvent extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                int i = charSequence.hashCode();
-                if (i == R.id.eventTitle) {
-                    validateEventTitle(charSequence.toString());
-                } else if (i == R.id.eventDsc) {
-                    validateEventDescription(charSequence.toString());
-                } else if (i == R.id.eventLocation) {
-                    validateEventLocation(charSequence.toString());
-                }
+                validateEventTitle(charSequence.toString());
                 updateSaveButtonState();
             }
 
@@ -147,11 +138,43 @@ public class AddEvent extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 // Not used
             }
-        };
+        });
 
-        eventTitleEditText.addTextChangedListener(textWatcher);
-        eventDescEditText.addTextChangedListener(textWatcher);
-        eventLocationEditText.addTextChangedListener(textWatcher);
+        eventDescEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEventDescription(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
+
+        eventLocationEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                validateEventLocation(charSequence.toString());
+                updateSaveButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not used
+            }
+        });
 
         endDateTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -170,6 +193,7 @@ public class AddEvent extends AppCompatActivity {
                 // Not used
             }
         });
+        saveButton.setOnClickListener(v -> makeApiCall());
     }
 
     private void makeApiCall() {

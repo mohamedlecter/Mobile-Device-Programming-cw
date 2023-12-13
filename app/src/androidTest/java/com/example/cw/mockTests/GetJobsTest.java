@@ -1,10 +1,11 @@
-package com.example.cw;
+package com.example.cw.mockTests;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.cw.api.Api;
+import com.example.cw.jobs.AddJob;
 import com.example.cw.jobs.JobsActivity;
 import com.example.cw.model.Job;
 
